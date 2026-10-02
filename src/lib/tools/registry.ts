@@ -47,7 +47,8 @@ const built: Record<string, Tool['load']> = {
   uuid: () => import('./uuid/Tool.svelte'),
   password: () => import('./password/Tool.svelte'),
   hash: () => import('./hash/Tool.svelte'),
-  hmac: () => import('./hmac/Tool.svelte')
+  hmac: () => import('./hmac/Tool.svelte'),
+  certificate: () => import('./certificate/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
