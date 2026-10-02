@@ -225,3 +225,17 @@ input[type='datetime-local'].t-input {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* the browser's own "choose a file" button, in the look of .t-small */
+input[type='file'].t-input::file-selector-button {
+  margin-right: 0.75rem;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  cursor: pointer;
+}

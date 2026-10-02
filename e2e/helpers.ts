@@ -1,5 +1,11 @@
 import type { Page, Route } from '@playwright/test';
 
+/** Opens a page and waits until it reacts to input: a click before that would be lost. */
+export async function open(page: Page, path: string) {
+  await page.goto(path);
+  await page.locator('html[data-hydrated]').waitFor();
+}
+
 /** Collects CSP violations and uncaught errors, so a test fails if either happens. */
 export function watchErrors(page: Page) {
   const errors: string[] = [];

@@ -33,6 +33,8 @@
 
   // After the first render, so neither delays the page. Favourites work without sign-in; sign-in only adds sync.
   onMount(() => {
+    // from here on the page reacts to input; the end-to-end tests wait for this before they click
+    document.documentElement.dataset.hydrated = 'true';
     prefs.init();
     favorites.init();
     auth.init();
