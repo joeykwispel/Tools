@@ -10,7 +10,8 @@ for (const tool of live) {
 
     await page.goto(`/${tool.slug}/`);
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText(tool.title.en);
+    // the first one: a tool may show headings of its own further down (a Markdown preview does)
+    await expect(page.getByRole('heading', { level: 1 }).first()).toHaveText(tool.title.en);
     await expect(page).toHaveTitle(`${tool.title.en} | Tools`);
     await expect(page.locator('link[rel=canonical]')).toHaveAttribute('href', `https://tools.joeyoosenbrug.nl/${tool.slug}/`);
     await expect(page.getByRole('button', { name: `Add ${tool.title.en} to favourites` })).toBeVisible();
@@ -18,7 +19,7 @@ for (const tool of live) {
 
     await page.goto(`/nl/${tool.slug}/`);
     await expect(page.locator('html')).toHaveAttribute('lang', 'nl');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText(tool.title.nl);
+    await expect(page.getByRole('heading', { level: 1 }).first()).toHaveText(tool.title.nl);
     await expect(page.getByRole('link', { name: /alle tools/ })).toHaveAttribute('href', '/nl/');
 
     await page.waitForLoadState('networkidle');
