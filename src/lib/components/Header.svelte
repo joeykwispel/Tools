@@ -9,9 +9,9 @@
   /**
    * The joeyoosenbrug.nl header from the portfolio's design kit (docs/design-kit/header.html), 1:1.
    * Only the links, the current link and the language links change; behaviour comes from jo-header.js.
-   * The Ctrl K button only shows when `onSearch` is passed.
+   * The Ctrl K button only shows when `onSearch` is passed, the menu (and its burger) only when there are links.
    */
-  let { links, onSearch }: { links: HeaderLink[]; onSearch?: () => void } = $props();
+  let { links = [], onSearch }: { links?: HeaderLink[]; onSearch?: () => void } = $props();
   const l = $derived(t(app.locale).header);
   let root: HTMLElement;
 
@@ -25,17 +25,19 @@
   <div class="jo-nav__bar">
     <a class="jo-nav__logo" href="https://joeyoosenbrug.nl/" aria-label={l.home}><span class="jo-nav__br">&lt;</span>JO<span class="jo-nav__br">/&gt;</span></a>
 
-    <nav class="jo-nav__menu" aria-label={l.main}>
-      <ul>
-        {#each links as link, i (link.href)}
-          <li>
-            <a class="jo-nav__link" href={link.href} aria-current={link.current ? 'page' : undefined}
-              ><span class="jo-nav__idx">{String(i + 1).padStart(2, '0')}.</span>{link.label}</a
-            >
-          </li>
-        {/each}
-      </ul>
-    </nav>
+    {#if links.length}
+      <nav class="jo-nav__menu" aria-label={l.main}>
+        <ul>
+          {#each links as link, i (link.href)}
+            <li>
+              <a class="jo-nav__link" href={link.href} aria-current={link.current ? 'page' : undefined}
+                ><span class="jo-nav__idx">{String(i + 1).padStart(2, '0')}.</span>{link.label}</a
+              >
+            </li>
+          {/each}
+        </ul>
+      </nav>
+    {/if}
 
     <div class="jo-nav__tools">
       <!-- Not rendered without a command menu: the kit's display: inline-flex wins over the `hidden` attribute. -->
@@ -92,34 +94,36 @@
         </svg>
       </button>
 
-      <button type="button" class="jo-nav__icon jo-nav__burger" aria-expanded="false" aria-label={l.menu}>
-        <svg
-          class="jo-nav__open"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          aria-hidden="true"
-        >
-          <path d="M4 7h16M4 12h16M4 17h16" />
-        </svg>
-        <svg
-          class="jo-nav__close"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          aria-hidden="true"
-        >
-          <path d="M6 6l12 12M18 6L6 18" />
-        </svg>
-      </button>
+      {#if links.length}
+        <button type="button" class="jo-nav__icon jo-nav__burger" aria-expanded="false" aria-label={l.menu}>
+          <svg
+            class="jo-nav__open"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+          <svg
+            class="jo-nav__close"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      {/if}
     </div>
   </div>
 </header>
