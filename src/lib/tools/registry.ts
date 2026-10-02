@@ -23,7 +23,8 @@ const built: Record<string, Tool['load']> = {
   regex: () => import('./regex/Tool.svelte'),
   base64: () => import('./base64/Tool.svelte'),
   url: () => import('./url/Tool.svelte'),
-  jwt: () => import('./jwt/Tool.svelte')
+  jwt: () => import('./jwt/Tool.svelte'),
+  'html-entities': () => import('./html-entities/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
