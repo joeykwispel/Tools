@@ -18,7 +18,7 @@ const en = {
   tooLong: 'This is too much for a QR code. With lower error correction more fits.',
   svg: 'Download SVG',
   png: 'Download PNG',
-  hint: 'Made in your browser. The password is only in the code itself.'
+  hint: 'The password goes into the code and nowhere else. Anyone who scans the code can read it.'
 };
 
 const nl: typeof en = {
@@ -41,7 +41,7 @@ const nl: typeof en = {
   tooLong: 'Dit is te veel voor een QR-code. Met minder foutcorrectie past er meer in.',
   svg: 'Download SVG',
   png: 'Download PNG',
-  hint: 'Gemaakt in je browser. Het wachtwoord staat alleen in de code zelf.'
+  hint: 'Het wachtwoord gaat de code in en nergens anders heen. Wie de code scant, kan het lezen.'
 };
 
 export default { en, nl };

@@ -124,7 +124,9 @@
         </div>
       {/if}
       <p class="t-status" class:t-bad={!made.ok && made.error === 'tooLong'} role="status" aria-live="polite">{status}</p>
-      <p class="t-hint">{c.hint}</p>
+      {#if kind === 'wifi'}
+        <p class="t-hint">{c.hint}</p>
+      {/if}
     </section>
   </div>
 </div>
