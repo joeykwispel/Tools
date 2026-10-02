@@ -47,6 +47,12 @@ test('sign in with Google: this device and the account are merged, and changes a
   await expect(page.getByRole('button', { name: 'Account: Ada Lovelace' })).toBeVisible();
   await expect(page).toHaveURL(/localhost:\d+\/$/);
 
+  // the initial sits in the middle of its button
+  const button = (await page.getByRole('button', { name: 'Account: Ada Lovelace' }).boundingBox())!;
+  const initial = (await page.locator('.auth .initial').boundingBox())!;
+  expect(initial.x + initial.width / 2).toBeCloseTo(button.x + button.width / 2, 1);
+  expect(initial.y + initial.height / 2).toBeCloseTo(button.y + button.height / 2, 1);
+
   // regex from this device, json from the account; jwt was removed elsewhere after it was starred here
   const pinned = page.getByTestId('favorites');
   await expect(pinned.locator('h3')).toHaveText(['JSON formatter', 'Regex tester']);

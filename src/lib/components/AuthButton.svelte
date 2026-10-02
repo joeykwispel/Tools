@@ -110,6 +110,10 @@
   .auth {
     position: relative;
   }
+  /* The kit's icon button keeps the browser's 6px padding, which leaves 22px: the 24px circle then sits 1px to the right. */
+  .trigger {
+    padding: 0;
+  }
   .trigger.wide {
     width: auto;
     display: flex;
