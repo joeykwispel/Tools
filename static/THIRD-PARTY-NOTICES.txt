@@ -22,3 +22,12 @@ Copyright (c) 2016-2026 Svelte contributors
 ------------------------------------------------------------------------------
 yaml (ISC License), loaded by the YAML ↔ JSON tool
 Copyright Eemeli Aro (https://github.com/eemeli/yaml)
+
+------------------------------------------------------------------------------
+marked (MIT License), loaded by the Markdown preview
+Copyright (c) 2018+, MarkedJS (https://github.com/markedjs/marked)
+Copyright (c) 2011-2018, Christopher Jeffrey
+
+------------------------------------------------------------------------------
+DOMPurify (Apache License 2.0 or Mozilla Public License 2.0), loaded by the Markdown preview
+Copyright 2025 Dr.-Ing. Mario Heiderich, Cure53 (https://github.com/cure53/DOMPurify)
