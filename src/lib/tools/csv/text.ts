@@ -1,0 +1,53 @@
+const en = {
+  input: 'CSV',
+  file: 'Or open a file',
+  fileHint: 'The file is read in your browser. Up to {max}.',
+  fileTooLarge: '{name} is too large; the limit is {max}.',
+  delimiter: 'Fields are separated by',
+  auto: 'find it for me',
+  comma: 'a comma',
+  semicolon: 'a semicolon',
+  tab: 'a tab',
+  pipe: 'a pipe |',
+  header: 'The first row holds the column names',
+  filter: 'Show only rows with',
+  table: 'Table',
+  column: 'Column {n}',
+  sortBy: 'Sort by {name}',
+  empty: 'Paste CSV or open a file to see it as a table.',
+  summary: '{rows} rows, {columns} columns, separated by {delimiter}.',
+  summaryOne: '1 row, {columns} columns, separated by {delimiter}.',
+  filtered: '{shown} of {rows} rows match.',
+  ragged: '{count} rows have a different number of fields than the first row.',
+  listed: 'The first {count} rows are shown.',
+  copyJson: 'Copy as JSON',
+  names: { ',': 'commas', ';': 'semicolons', '\t': 'tabs', '|': 'pipes' }
+};
+
+const nl: typeof en = {
+  input: 'CSV',
+  file: 'Of open een bestand',
+  fileHint: 'Het bestand wordt in je browser gelezen. Maximaal {max}.',
+  fileTooLarge: '{name} is te groot; de limiet is {max}.',
+  delimiter: 'Velden worden gescheiden door',
+  auto: 'zoek het voor me uit',
+  comma: 'een komma',
+  semicolon: 'een puntkomma',
+  tab: 'een tab',
+  pipe: 'een pipe |',
+  header: 'De eerste rij bevat de kolomnamen',
+  filter: 'Toon alleen rijen met',
+  table: 'Tabel',
+  column: 'Kolom {n}',
+  sortBy: 'Sorteer op {name}',
+  empty: 'Plak CSV of open een bestand om het als tabel te zien.',
+  summary: '{rows} rijen, {columns} kolommen, gescheiden door {delimiter}.',
+  summaryOne: '1 rij, {columns} kolommen, gescheiden door {delimiter}.',
+  filtered: '{shown} van de {rows} rijen komen overeen.',
+  ragged: '{count} rijen hebben een ander aantal velden dan de eerste rij.',
+  listed: 'De eerste {count} rijen worden getoond.',
+  copyJson: 'Kopieer als JSON',
+  names: { ',': "komma's", ';': "puntkomma's", '\t': 'tabs', '|': 'pipes' }
+};
+
+export default { en, nl };
