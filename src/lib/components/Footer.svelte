@@ -9,7 +9,7 @@
 
 <footer>
   <div class="container row mono">
-    <p><span class="com">//</span> © {year} Tools · {f.tagline}</p>
+    <p><span class="com">//</span> © {year} Tools</p>
     <p>
       {f.madeBy}
       <a href="https://joeyoosenbrug.nl/" target="_blank" rel="noopener noreferrer">Joey Oosenbrug ↗<span class="sr-only"> {f.newTab}</span></a>

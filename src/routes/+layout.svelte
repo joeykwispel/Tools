@@ -8,8 +8,6 @@
   import { page } from '$app/state';
   import { app } from '$lib/app.svelte';
   import { localeOf } from '$lib/i18n';
-  import { t } from '$lib/locales';
-  import type { HeaderLink } from '$lib/types';
   import Header from '$lib/components/Header.svelte';
   import Footer from '$lib/components/Footer.svelte';
 
@@ -25,26 +23,11 @@
   $effect(() => {
     document.documentElement.lang = app.locale;
   });
-
-  const isHome = $derived(page.route.id === '/[[lang=lang]]');
-  // On the home page the links jump to its sections (the header marks the one in view); elsewhere they lead back to them.
-  const links: HeaderLink[] = $derived.by(() => {
-    const h = t(app.locale).header;
-    return isHome
-      ? [
-          { label: h.tools, href: '#tools' },
-          { label: h.how, href: '#how' }
-        ]
-      : [
-          { label: h.tools, href: app.href('/') },
-          { label: h.how, href: app.href('/#how') }
-        ];
-  });
 </script>
 
-<!-- Re-created per page and language, so jo-header.js picks up the new links and labels. -->
+<!-- Re-created per page and language, so jo-header.js picks up the new labels. -->
 {#key `${page.url.pathname}`}
-  <Header {links} />
+  <Header />
 {/key}
 
 <main id="main">

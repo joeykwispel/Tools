@@ -14,36 +14,14 @@ export default {
     toDark: 'Switch to dark theme',
     menu: 'Menu',
     search: 'Command menu',
-    skip: 'Skip to content',
-    tools: 'Tools',
-    how: 'How it works'
+    skip: 'Skip to content'
   },
   hero: {
     title: 'Developer tools,',
     titleAccent: 'in your browser.',
-    intro: 'One page to open every working day: the small tools a developer keeps reaching for, and the best ones elsewhere, one click away.',
-    status: 'The tools are being built. They land here pack by pack.'
-  },
-  how: {
-    title: 'How it works',
-    intro: 'Three rules every tool here follows.',
-    steps: [
-      {
-        title: 'Nothing leaves the browser',
-        body: 'Every tool runs on your own machine. The page is not allowed to send data to another server, so a token or password you paste stays in this tab.'
-      },
-      {
-        title: 'One page per tool',
-        body: 'Each tool gets its own address, so you can bookmark the one you use and share it with a colleague.'
-      },
-      {
-        title: 'No account, no tracking',
-        body: 'Favourites and your own links are kept in this browser. There is nothing to sign up for and no cookie banner to click away.'
-      }
-    ]
+    status: 'The first tools are on their way.'
   },
   footer: {
-    tagline: 'Developer tools that stay in your browser.',
     madeBy: 'Made by',
     source: 'Source',
     newTab: '(opens in a new tab)'
