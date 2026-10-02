@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { mockSupabase, USER, watchErrors } from './helpers';
+import { mockSupabase, open, USER, watchErrors } from './helpers';
 
 test('signed out, a favourite is pinned at the top and survives a reload', async ({ page }) => {
-  await page.goto('/');
+  await open(page, '/');
   await expect(page.getByTestId('favorites')).toHaveCount(0);
   const star = page.locator('[data-category="text"]').getByRole('button', { name: 'Add Regex tester to favourites' });
   await expect(star).toHaveAttribute('aria-pressed', 'false');
@@ -21,7 +21,7 @@ test('signed out, a favourite is pinned at the top and survives a reload', async
   // the star on the tool's own page shows and changes the same favourite
   await page.goto('/regex/');
   await page.getByRole('button', { name: 'Remove Regex tester from favourites' }).click();
-  await page.goto('/');
+  await open(page, '/');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.getByTestId('favorites')).toHaveCount(0);
 });
@@ -33,7 +33,7 @@ test('sign in with Google: this device and the account are merged, and changes a
     // removed on another device, long after it was starred
     { slug: 'jwt', starred: false, changed_at: '2999-01-01T00:00:00Z' }
   ]);
-  await page.goto('/');
+  await open(page, '/');
   await page.getByRole('button', { name: 'Add Regex tester to favourites' }).click();
   await page.getByRole('button', { name: 'Add JWT decoder to favourites' }).click();
   await expect(page.getByTestId('favorites').locator('li')).toHaveCount(2);
@@ -92,7 +92,7 @@ test('a cancelled Google consent shows a message and everything keeps working', 
 
 test('the sign-in panel speaks Dutch', async ({ page }) => {
   await mockSupabase(page);
-  await page.goto('/nl/');
+  await open(page, '/nl/');
   await page.getByRole('button', { name: 'Inloggen' }).click();
   await expect(page.locator('#auth-panel').getByRole('button', { name: 'Doorgaan met Google' })).toBeVisible();
   await expect(page.locator('#auth-panel')).toContainText('Alles werkt ook zonder account.');

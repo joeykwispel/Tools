@@ -20,7 +20,8 @@ export const categories: Category[] = [
  * Building a tool means adding src/lib/tools/<slug>/Tool.svelte and one line here; the rest follows from the registry.
  */
 const built: Record<string, Tool['load']> = {
-  regex: () => import('./regex/Tool.svelte')
+  regex: () => import('./regex/Tool.svelte'),
+  base64: () => import('./base64/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */

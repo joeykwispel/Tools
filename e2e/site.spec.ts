@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { watchErrors, watchForeignRequests } from './helpers';
+import { open, watchErrors, watchForeignRequests } from './helpers';
+import { all, live, soon } from './live';
 
 test('home page is there in English and Dutch', async ({ page }) => {
   const errors = watchErrors(page);
@@ -15,41 +16,40 @@ test('home page is there in English and Dutch', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test('the home page lists every tool: the built one as a link, the planned ones without', async ({ page }) => {
+test('the home page lists every tool: the built ones as links, the planned ones without', async ({ page }) => {
   await page.goto('/');
-  const rows = page.locator('main li[data-status]');
-  await expect(rows).toHaveCount(55);
-  await expect(page.locator('main li[data-status="live"]')).toHaveCount(1);
-  await expect(page.getByText('Coming soon: 54 tools.')).toBeVisible();
-  await expect(page.getByRole('heading', { level: 2, name: 'Encode / decode' })).toBeVisible();
-  const jwt = rows.filter({ has: page.getByRole('heading', { level: 3, name: 'JWT decoder', exact: true }) });
-  await expect(jwt).toContainText('soon');
+  await expect(page.locator('main li[data-status]')).toHaveCount(all.length);
+  await expect(page.locator('main li[data-status="live"]')).toHaveCount(live.length);
   await expect(page.locator('main li[data-status="soon"] a')).toHaveCount(0);
-  await expect(page.getByRole('link', { name: 'Regex tester' })).toHaveAttribute('href', '/regex/');
+  await expect(page.getByRole('heading', { level: 2, name: 'Encode / decode' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Regex tester', exact: true })).toHaveAttribute('href', '/regex/');
+  if (soon.length) {
+    await expect(page.getByText(`Coming soon: ${soon.length} tools.`)).toBeVisible();
+    await expect(page.locator('main li[data-status="soon"]').first()).toContainText('soon');
+  }
 
   await page.goto('/nl/');
   await expect(page.getByRole('heading', { level: 2, name: 'Coderen / decoderen' })).toBeVisible();
   await expect(page.getByRole('heading', { level: 3, name: 'JWT-decoder', exact: true })).toBeVisible();
-  await expect(page.locator('main li[data-status="soon"]').first()).toContainText('binnenkort');
-  await expect(page.getByRole('link', { name: 'Regex-tester' })).toHaveAttribute('href', '/nl/regex/');
+  await expect(page.getByRole('link', { name: 'Regex-tester', exact: true })).toHaveAttribute('href', '/nl/regex/');
+  if (soon.length) await expect(page.locator('main li[data-status="soon"]').first()).toContainText('binnenkort');
 });
 
 test('"Available only" hides the tools that are not built yet, and is remembered', async ({ page }) => {
-  await page.goto('/');
-  await expect(page.locator('main li[data-status]')).toHaveCount(55);
-  const built = await page.locator('main li[data-status="live"]').count();
+  test.skip(!soon.length, 'every tool is built: there is nothing to hide, and no toggle');
+  await open(page, '/');
   const toggle = page.getByRole('button', { name: 'Available only' });
   await expect(toggle).toHaveAttribute('aria-pressed', 'false');
 
   // a favourite that is not built yet goes too
-  await page.getByRole('button', { name: 'Add JWT decoder to favourites' }).click();
+  await page.getByRole('button', { name: `Add ${soon[0].title.en} to favourites` }).click();
   await expect(page.getByTestId('favorites')).toBeVisible();
 
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('main li[data-status="soon"]')).toHaveCount(0);
-  await expect(page.locator('main li[data-status="live"]')).toHaveCount(built);
-  await expect(page.getByText(`Tools available now: ${built}.`)).toBeVisible();
+  await expect(page.locator('main li[data-status="live"]')).toHaveCount(live.length);
+  await expect(page.getByText(`Tools available now: ${live.length}.`)).toBeVisible();
   await expect(page.getByTestId('favorites')).toHaveCount(0);
   // a category without a built tool is left out, heading and all
   await expect(page.getByRole('heading', { level: 2 })).toHaveCount(await page.locator('main section:has(li[data-status="live"])').count());
@@ -59,7 +59,8 @@ test('"Available only" hides the tools that are not built yet, and is remembered
   await expect(page.locator('main li[data-status="soon"]')).toHaveCount(0);
 
   await page.getByRole('button', { name: 'Available only' }).click();
-  await expect(page.locator('main li[data-status]')).toHaveCount(56);
+  // every tool again, plus the favourite in its own group
+  await expect(page.locator('main li[data-status]')).toHaveCount(all.length + 1);
   await expect(page.getByText('Coming soon:')).toBeVisible();
 });
 
@@ -74,7 +75,7 @@ test('language switch keeps the page and is remembered', async ({ page, isMobile
 });
 
 test('the theme button switches the theme and it survives a reload', async ({ page }) => {
-  await page.goto('/');
+  await open(page, '/');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.locator('.jo-nav__theme').click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
@@ -83,7 +84,7 @@ test('the theme button switches the theme and it survives a reload', async ({ pa
 });
 
 test('an unknown address, or a tool that is not built yet, shows the 404 page with a way back', async ({ page }) => {
-  for (const path of ['/no-such-tool/', '/jwt/']) {
+  for (const path of ['/no-such-tool/', ...soon.slice(0, 1).map((tool) => `/${tool.slug}/`)]) {
     const res = await page.goto(path);
     expect(res?.status()).toBe(404);
     await expect(page.getByRole('heading', { level: 1 })).toContainText('404');
@@ -94,11 +95,11 @@ test('an unknown address, or a tool that is not built yet, shows the 404 page wi
 
 test('signed out, the site only talks to its own origin, also while a tool is used', async ({ page, baseURL }) => {
   const foreign = watchForeignRequests(page, baseURL!);
-  await page.goto('/');
+  await open(page, '/');
   // the sign-in button is there, so the auth library has loaded and found no session
   await expect(page.getByRole('button', { name: 'Sign in' })).toBeVisible();
   await page.getByRole('button', { name: 'Add Regex tester to favourites' }).first().click();
-  await page.goto('/regex/');
+  await open(page, '/regex/');
   await page.getByLabel('Test text').fill('a secret: hunter2');
   await page.getByLabel('Pattern').fill('hunter\\d');
   await expect(page.getByRole('status')).toHaveText('1 match.');
