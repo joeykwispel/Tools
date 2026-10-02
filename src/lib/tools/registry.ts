@@ -50,7 +50,8 @@ const built: Record<string, Tool['load']> = {
   hmac: () => import('./hmac/Tool.svelte'),
   certificate: () => import('./certificate/Tool.svelte'),
   qr: () => import('./qr/Tool.svelte'),
-  totp: () => import('./totp/Tool.svelte')
+  totp: () => import('./totp/Tool.svelte'),
+  sri: () => import('./sri/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
