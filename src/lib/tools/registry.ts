@@ -57,7 +57,8 @@ const built: Record<string, Tool['load']> = {
   cron: () => import('./cron/Tool.svelte'),
   'date-diff': () => import('./date-diff/Tool.svelte'),
   timezone: () => import('./timezone/Tool.svelte'),
-  colour: () => import('./colour/Tool.svelte')
+  colour: () => import('./colour/Tool.svelte'),
+  contrast: () => import('./contrast/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
