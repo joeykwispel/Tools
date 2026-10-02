@@ -33,7 +33,8 @@ const built: Record<string, Tool['load']> = {
   'json-to-ts': () => import('./json-to-ts/Tool.svelte'),
   diff: () => import('./diff/Tool.svelte'),
   csv: () => import('./csv/Tool.svelte'),
-  jsonpath: () => import('./jsonpath/Tool.svelte')
+  jsonpath: () => import('./jsonpath/Tool.svelte'),
+  sql: () => import('./sql/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
