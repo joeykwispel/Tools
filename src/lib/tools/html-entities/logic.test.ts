@@ -4,7 +4,7 @@ import { ENTITIES, decode, encode } from './logic';
 describe('the entity table', () => {
   it('has the names at the right code points', () => {
     const at = (name: string) => String.fromCodePoint(ENTITIES.get(name)!);
-    expect(at('nbsp')).toBe(' ');
+    expect(at('nbsp')).toBe('\u00A0');
     expect(at('copy')).toBe('©');
     expect(at('eacute')).toBe('é');
     expect(at('Uuml')).toBe('Ü');
