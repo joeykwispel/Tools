@@ -11,10 +11,12 @@
   import { auth } from '$lib/cloud/auth.svelte';
   import { favorites } from '$lib/favorites/favorites.svelte';
   import { localeOf } from '$lib/i18n';
+  import CommandMenu from '$lib/components/CommandMenu.svelte';
   import Header from '$lib/components/Header.svelte';
   import Footer from '$lib/components/Footer.svelte';
 
   let { children } = $props();
+  let menuOpen = $state(false);
 
   // Read the language from the URL during render as well, so the prerendered HTML is already in the right language.
   const sync = () => {
@@ -36,8 +38,11 @@
 
 <!-- Re-created per page and language, so jo-header.js picks up the new labels. -->
 {#key `${page.url.pathname}`}
-  <Header />
+  <!-- Ctrl K, or the button in the header; pressing it again closes the menu -->
+  <Header onSearch={() => (menuOpen = !menuOpen)} />
 {/key}
+
+<CommandMenu bind:open={menuOpen} />
 
 <main id="main">
   {@render children()}
