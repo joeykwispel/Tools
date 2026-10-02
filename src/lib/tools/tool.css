@@ -1,0 +1,227 @@
+/*
+ * Building blocks every tool page shares, so the tools look and behave alike. Tokens only, both themes.
+ * A tool adds scoped styles for what is its own; anything two tools need moves here.
+ *
+ *   .t-tool            the page of a tool: input on the left, result on the right, one column on a small screen
+ *   .t-tool.t-single   one column on every screen
+ *   .t-col             a column of fields
+ *   .t-field           a label with its control
+ *   .t-label           the label, a legend or a small heading
+ *   .t-row             label on the left, a small button on the right
+ *   .t-input           text input, select and textarea
+ *   .t-box             a block of output
+ *   .t-small           a small button (copy, sample, clear)
+ *   .t-checks          a row of checkboxes or radio buttons in a fieldset
+ *   .t-hint .t-status  a line of help, a line of result; add .t-bad for an error
+ *   .t-kv              a list of names and values (dl)
+ *   .t-table           a plain table
+ */
+.t-tool {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+}
+.t-tool.t-single {
+  grid-template-columns: minmax(0, 1fr);
+}
+.t-col {
+  display: grid;
+  gap: 1.1rem;
+  min-width: 0;
+}
+.t-field {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+}
+.t-label {
+  padding: 0;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+.t-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  flex-wrap: wrap;
+}
+.t-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.t-input,
+.t-box {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.t-input {
+  font-family: var(--mono);
+}
+textarea.t-input {
+  display: block;
+  min-height: 6rem;
+  resize: vertical;
+}
+select.t-input {
+  cursor: pointer;
+}
+/* the native dropdown list takes the page colours, not the translucent surface */
+select.t-input option {
+  background: var(--bg-2);
+  color: var(--text);
+}
+input[type='number'].t-input,
+input[type='date'].t-input,
+input[type='time'].t-input,
+input[type='datetime-local'].t-input {
+  color-scheme: dark;
+}
+:root[data-theme='light'] .t-input {
+  color-scheme: light;
+}
+.t-input.t-bad {
+  border-color: var(--syn-num);
+}
+/* Output grows with its content instead of scrolling inside the page: a scrolling box can't be reached by keyboard. */
+.t-box {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  min-height: 2.9rem;
+}
+
+.t-small {
+  padding: 0.15rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+.t-small:hover {
+  color: var(--accent-text);
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+}
+.t-small[aria-pressed='true'] {
+  color: var(--accent-text);
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.t-small:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.t-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.t-checks legend {
+  margin-bottom: 0.4rem;
+}
+.t-checks label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.t-checks input,
+.t-range {
+  accent-color: var(--accent);
+}
+.t-checks code {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--accent-text);
+}
+.t-range {
+  width: 100%;
+}
+
+.t-hint,
+.t-status {
+  max-width: none;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.t-status {
+  min-height: 1.3rem;
+}
+.t-hint.t-bad,
+.t-status.t-bad {
+  color: var(--syn-num);
+}
+.t-good {
+  color: var(--accent-text);
+}
+
+.t-kv {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.3rem 1rem;
+  margin: 0;
+  font-size: 0.85rem;
+}
+.t-kv dt {
+  font-family: var(--mono);
+  color: var(--muted);
+}
+.t-kv dd {
+  margin: 0;
+  font-family: var(--mono);
+  overflow-wrap: anywhere;
+}
+
+.t-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.t-table th,
+.t-table td {
+  padding: 0.45rem 0.7rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.t-table th {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.t-table td {
+  font-family: var(--mono);
+}
+
+@media (max-width: 860px) {
+  .t-tool {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

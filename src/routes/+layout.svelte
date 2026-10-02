@@ -4,6 +4,7 @@
   import '@fontsource-variable/jetbrains-mono';
   import '$lib/jo/jo-kit.css';
   import '$lib/jo/jo-header.css';
+  import '$lib/tools/tool.css';
   import '../app.css';
   import { onMount } from 'svelte';
   import { page } from '$app/state';

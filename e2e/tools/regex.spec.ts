@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { watchErrors } from './helpers';
+import { watchErrors } from '../helpers';
 
 test('the regex tester opens from the home page with a working sample', async ({ page }) => {
   const errors = watchErrors(page);
