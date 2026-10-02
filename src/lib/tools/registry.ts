@@ -52,7 +52,8 @@ const built: Record<string, Tool['load']> = {
   qr: () => import('./qr/Tool.svelte'),
   totp: () => import('./totp/Tool.svelte'),
   sri: () => import('./sri/Tool.svelte'),
-  csp: () => import('./csp/Tool.svelte')
+  csp: () => import('./csp/Tool.svelte'),
+  timestamp: () => import('./timestamp/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
