@@ -46,6 +46,7 @@
     "marked": "^18.0.14",
     "prettier": "^3.9.9",
     "prettier-plugin-svelte": "^4.1.1",
+    "qrcode-generator": "^2.0.4",
     "svelte": "^5.20.0",
     "svelte-check": "^4.1.0",
     "typescript": "^6.0.3",
