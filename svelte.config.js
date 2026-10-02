@@ -31,8 +31,9 @@ export default {
         'img-src': ['self', 'data:'],
         // Vite inlines small font subsets as data: URIs
         'font-src': ['self', 'data:'],
-        // Whatever a tool is given can't be sent to another host: this is what makes "it never leaves this tab" true.
-        'connect-src': ['self'],
+        // The page can only talk to itself and to the Supabase project that sign-in and syncing favourites use
+        // (src/lib/cloud/config.ts). No tool sends what it is given there; e2e/site.spec.ts checks that.
+        'connect-src': ['self', 'https://onnbzdrtdpyatfhzkghj.supabase.co'],
         'object-src': ['none'],
         'base-uri': ['self'],
         'form-action': ['none']

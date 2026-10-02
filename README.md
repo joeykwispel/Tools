@@ -8,13 +8,15 @@ A dashboard of developer tools: the small tools a developer keeps reaching for, 
 
 ## Principles
 
-1. **Nothing leaves the browser.** Every tool runs client-side, and the Content Security Policy has `connect-src 'self'`, so "your token never leaves this tab" is enforced, not promised.
+1. **What you put into a tool stays in the browser.** Every tool runs client-side. The Content Security Policy lets the page talk to itself and to one other host: the Supabase project behind the optional sign-in, which only ever receives your favourites.
 2. **One file per tool, one registry.** Search, cards, routes, tests and translations all follow from the registry.
 3. **Useful on day one.** The dashboard is a start page before the last tool is built.
 
 ## Status
 
-The site is live and lists every planned tool as coming soon. The list comes from `src/lib/tools/registry.ts`; the tools themselves arrive pack by pack.
+The first tool is built: the [regex tester](https://tools.joeyoosenbrug.nl/regex/). The other planned tools are listed as coming soon. Both come from `src/lib/tools/registry.ts`.
+
+You can star tools; the favourites are pinned at the top. They live in your browser, and sync across devices if you sign in with Google ([how that works](docs/favorites.md)).
 
 ## Stack
 
