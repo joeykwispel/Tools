@@ -44,7 +44,8 @@ const built: Record<string, Tool['load']> = {
   lines: () => import('./lines/Tool.svelte'),
   markdown: () => import('./markdown/Tool.svelte'),
   slug: () => import('./slug/Tool.svelte'),
-  uuid: () => import('./uuid/Tool.svelte')
+  uuid: () => import('./uuid/Tool.svelte'),
+  password: () => import('./password/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */

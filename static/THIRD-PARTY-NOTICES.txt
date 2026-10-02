@@ -31,3 +31,8 @@ Copyright (c) 2011-2018, Christopher Jeffrey
 ------------------------------------------------------------------------------
 DOMPurify (Apache License 2.0 or Mozilla Public License 2.0), loaded by the Markdown preview
 Copyright 2025 Dr.-Ing. Mario Heiderich, Cure53 (https://github.com/cure53/DOMPurify)
+
+------------------------------------------------------------------------------
+EFF short word list for passphrases, used by the password generator
+By the Electronic Frontier Foundation (https://www.eff.org/dice)
+Licensed under Creative Commons Attribution 3.0 United States: https://creativecommons.org/licenses/by/3.0/us/
