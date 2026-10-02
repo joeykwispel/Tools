@@ -14,7 +14,7 @@ A dashboard of developer tools: the small tools a developer keeps reaching for, 
 
 ## Status
 
-The skeleton is live: header, footer, both languages, both themes, checks and deploy. The tools arrive pack by pack.
+The site is live and lists every planned tool as coming soon. The list comes from `src/lib/tools/registry.ts`; the tools themselves arrive pack by pack.
 
 ## Stack
 
