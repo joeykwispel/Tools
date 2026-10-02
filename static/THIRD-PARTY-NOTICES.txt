@@ -1,0 +1,20 @@
+Tools (https://github.com/joeykwispel/Tools) is MIT licensed. It ships the following
+third-party material; each keeps its own license.
+
+------------------------------------------------------------------------------
+Inter (self-hosted via @fontsource-variable/inter)
+Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter)
+Licensed under the SIL Open Font License, Version 1.1: https://openfontlicense.org
+
+------------------------------------------------------------------------------
+JetBrains Mono (self-hosted via @fontsource-variable/jetbrains-mono)
+Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
+Licensed under the SIL Open Font License, Version 1.1: https://openfontlicense.org
+
+------------------------------------------------------------------------------
+Header icons (search, sun, moon, menu, close), from the joeyoosenbrug.nl design kit
+Based on Lucide (ISC License, https://lucide.dev) and Feather (MIT License, https://feathericons.com)
+
+------------------------------------------------------------------------------
+Svelte and SvelteKit (MIT License), bundled into the site
+Copyright (c) 2016-2026 Svelte contributors
