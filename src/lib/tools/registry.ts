@@ -36,7 +36,8 @@ const built: Record<string, Tool['load']> = {
   jsonpath: () => import('./jsonpath/Tool.svelte'),
   sql: () => import('./sql/Tool.svelte'),
   env: () => import('./env/Tool.svelte'),
-  xml: () => import('./xml/Tool.svelte')
+  xml: () => import('./xml/Tool.svelte'),
+  xpath: () => import('./xpath/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
