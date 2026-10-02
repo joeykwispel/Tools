@@ -26,7 +26,8 @@ const built: Record<string, Tool['load']> = {
   jwt: () => import('./jwt/Tool.svelte'),
   'html-entities': () => import('./html-entities/Tool.svelte'),
   unicode: () => import('./unicode/Tool.svelte'),
-  hex: () => import('./hex/Tool.svelte')
+  hex: () => import('./hex/Tool.svelte'),
+  escape: () => import('./escape/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
