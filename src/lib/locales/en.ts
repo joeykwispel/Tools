@@ -25,7 +25,15 @@ export default {
   tools: {
     soon: 'soon',
     back: 'all tools',
-    privacy: 'Runs in your browser. Nothing you type here is sent anywhere.'
+    privacy: 'Runs in your browser. Nothing you type here is sent anywhere.',
+    copy: 'Copy',
+    copied: 'Copied',
+    sample: 'Sample',
+    clear: 'Clear',
+    input: 'Input',
+    output: 'Output',
+    download: 'Download',
+    invalid: 'Invalid input: {message}'
   },
   menu: {
     placeholder: 'Search tools…',
@@ -54,31 +62,6 @@ export default {
     signOut: 'Sign out',
     cancelled: 'Sign-in was cancelled.',
     failed: 'Sign-in failed. Try again later.'
-  },
-  regex: {
-    pattern: 'Pattern',
-    flags: 'Flags',
-    flagNames: { g: 'global', i: 'ignore case', m: 'multiline', s: 'dot matches newline', u: 'unicode' },
-    text: 'Test text',
-    matches: 'Matches',
-    none: 'No matches.',
-    one: '1 match.',
-    many: '{count} matches.',
-    truncated: 'Showing the first {count} matches.',
-    listed: 'The first {count} matches are listed; all of them are highlighted above.',
-    empty: 'Type a pattern to see what it matches.',
-    invalid: 'Invalid pattern: {message}',
-    tooSlow: 'This pattern takes too long on this text, so it was stopped. It probably backtracks too much.',
-    match: 'Match {n}',
-    at: 'at {index}',
-    group: 'Group {name}',
-    noValue: 'not matched',
-    replaceWith: 'Replace with',
-    replaceHint: '$1, $<name> and $& insert a group or the whole match.',
-    result: 'Result',
-    copy: 'Copy',
-    copied: 'Copied',
-    sample: 'Sample'
   },
   footer: {
     madeBy: 'Made by',

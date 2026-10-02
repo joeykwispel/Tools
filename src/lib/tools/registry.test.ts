@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { categories, tools, toolsIn } from './registry';
 
@@ -22,5 +23,17 @@ describe('registry', () => {
     expect(new Set(ids).size).toBe(ids.length);
     for (const t of tools) expect(ids, t.slug).toContain(t.category);
     for (const c of categories) expect(toolsIn(c.id).length, c.id).toBeGreaterThan(0);
+  });
+
+  it('has the same files for every built tool: the UI, its text, the logic, and tests for both', () => {
+    const built = tools.filter((t) => t.status === 'live');
+    expect(built.length).toBeGreaterThan(0);
+    for (const t of built) {
+      expect(t.load, t.slug).toBeTypeOf('function');
+      for (const file of ['Tool.svelte', 'text.ts', 'logic.ts', 'logic.test.ts'])
+        expect(existsSync(`src/lib/tools/${t.slug}/${file}`), `${t.slug}/${file}`).toBe(true);
+      expect(existsSync(`e2e/tools/${t.slug}.spec.ts`), `e2e/tools/${t.slug}.spec.ts`).toBe(true);
+    }
+    for (const t of tools.filter((t) => t.status === 'soon')) expect(t.load, t.slug).toBeUndefined();
   });
 });

@@ -26,7 +26,15 @@ export default {
   tools: {
     soon: 'binnenkort',
     back: 'alle tools',
-    privacy: 'Draait in je browser. Wat je hier typt wordt nergens heen gestuurd.'
+    privacy: 'Draait in je browser. Wat je hier typt wordt nergens heen gestuurd.',
+    copy: 'Kopiëren',
+    copied: 'Gekopieerd',
+    sample: 'Voorbeeld',
+    clear: 'Wissen',
+    input: 'Invoer',
+    output: 'Uitvoer',
+    download: 'Downloaden',
+    invalid: 'Ongeldige invoer: {message}'
   },
   menu: {
     placeholder: 'Zoek een tool…',
@@ -55,31 +63,6 @@ export default {
     signOut: 'Uitloggen',
     cancelled: 'Het inloggen is geannuleerd.',
     failed: 'Inloggen is mislukt. Probeer het later opnieuw.'
-  },
-  regex: {
-    pattern: 'Patroon',
-    flags: 'Flags',
-    flagNames: { g: 'globaal', i: 'hoofdletterongevoelig', m: 'meerdere regels', s: 'punt matcht nieuwe regel', u: 'unicode' },
-    text: 'Testtekst',
-    matches: 'Matches',
-    none: 'Geen matches.',
-    one: '1 match.',
-    many: '{count} matches.',
-    truncated: 'De eerste {count} matches worden getoond.',
-    listed: 'De eerste {count} matches staan in de lijst; hierboven zijn ze allemaal gemarkeerd.',
-    empty: 'Typ een patroon om te zien wat het matcht.',
-    invalid: 'Ongeldig patroon: {message}',
-    tooSlow: 'Dit patroon duurt te lang op deze tekst en is daarom gestopt. Het doet waarschijnlijk te veel aan backtracking.',
-    match: 'Match {n}',
-    at: 'op {index}',
-    group: 'Groep {name}',
-    noValue: 'niet gematcht',
-    replaceWith: 'Vervangen door',
-    replaceHint: '$1, $<naam> en $& voegen een groep of de hele match in.',
-    result: 'Resultaat',
-    copy: 'Kopiëren',
-    copied: 'Gekopieerd',
-    sample: 'Voorbeeld'
   },
   footer: {
     madeBy: 'Gemaakt door',

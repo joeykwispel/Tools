@@ -2,7 +2,9 @@
   import { onDestroy } from 'svelte';
   import { app } from '$lib/app.svelte';
   import { fill, t } from '$lib/locales';
-  import { FLAGS, segments, type Flag, type Input, type Output } from './logic';
+  import Output from '$lib/components/tool/Output.svelte';
+  import { FLAGS, segments, type Flag, type Input, type Output as Evaluated } from './logic';
+  import text_ from './text';
   import type { Request, Response } from './worker';
 
   const SAMPLE = {
@@ -15,7 +17,8 @@
   /** The list under the text shows this many matches in full; the highlighting shows all of them. */
   const LISTED = 20;
 
-  const c = $derived(t(app.locale).regex);
+  const c = $derived(text_[app.locale]);
+  const common = $derived(t(app.locale).tools);
 
   let pattern = $state(SAMPLE.pattern);
   let text = $state(SAMPLE.text);
@@ -23,11 +26,10 @@
   let on = $state<Record<Flag, boolean>>({ g: true, i: false, m: false, s: false, u: false });
   const flags = $derived(FLAGS.filter((f) => on[f]).join(''));
 
-  let output = $state<Output | null>(null);
+  let output = $state<Evaluated | null>(null);
   /** The text the output belongs to: while typing, the highlighting must not be laid over newer text. */
   let outputText = $state('');
   let tooSlow = $state(false);
-  let copied = $state(false);
 
   let worker: Worker | undefined;
   let busy = false;
@@ -89,24 +91,14 @@
     replacement = SAMPLE.replacement;
     on = { g: true, i: false, m: false, s: false, u: false };
   }
-
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(output?.replaced ?? '');
-      copied = true;
-      setTimeout(() => (copied = false), 1500);
-    } catch {
-      /* clipboard not available: the result can still be selected by hand */
-    }
-  }
 </script>
 
-<div class="tool">
-  <div class="in">
-    <div class="field">
-      <div class="label-row">
-        <label for="regex-pattern">{c.pattern}</label>
-        <button type="button" class="small mono" onclick={sample}>{c.sample}</button>
+<div class="t-tool">
+  <div class="t-col">
+    <div class="t-field">
+      <div class="t-row">
+        <label class="t-label" for="regex-pattern">{c.pattern}</label>
+        <button type="button" class="t-small" onclick={sample}>{common.sample}</button>
       </div>
       <div class="pattern mono" class:bad={failed}>
         <span aria-hidden="true">/</span>
@@ -115,31 +107,31 @@
       </div>
     </div>
 
-    <fieldset class="flags">
-      <legend>{c.flags}</legend>
+    <fieldset class="t-checks">
+      <legend class="t-label">{c.flags}</legend>
       {#each FLAGS as flag (flag)}
-        <label><input type="checkbox" bind:checked={on[flag]} /> <code class="mono">{flag}</code> {c.flagNames[flag]}</label>
+        <label><input type="checkbox" bind:checked={on[flag]} /> <code>{flag}</code> {c.flagNames[flag]}</label>
       {/each}
     </fieldset>
 
-    <div class="field">
-      <label for="regex-text">{c.text}</label>
-      <textarea id="regex-text" class="mono" rows="7" bind:value={text} spellcheck="false"></textarea>
+    <div class="t-field">
+      <label class="t-label" for="regex-text">{c.text}</label>
+      <textarea id="regex-text" class="t-input" rows="7" bind:value={text} spellcheck="false"></textarea>
     </div>
 
-    <div class="field">
-      <label for="regex-replacement">{c.replaceWith}</label>
-      <input id="regex-replacement" class="mono" type="text" bind:value={replacement} spellcheck="false" autocomplete="off" aria-describedby="regex-hint" />
-      <p class="hint" id="regex-hint">{c.replaceHint}</p>
+    <div class="t-field">
+      <label class="t-label" for="regex-replacement">{c.replaceWith}</label>
+      <input id="regex-replacement" class="t-input" type="text" bind:value={replacement} spellcheck="false" autocomplete="off" aria-describedby="regex-hint" />
+      <p class="t-hint" id="regex-hint">{c.replaceHint}</p>
     </div>
   </div>
 
-  <div class="out">
-    <section aria-labelledby="regex-matches">
-      <h2 id="regex-matches">{c.matches}</h2>
-      <p class="status" class:bad={failed} id="regex-status" role="status" aria-live="polite">{status}</p>
+  <div class="t-col">
+    <section class="t-field" aria-labelledby="regex-matches">
+      <h2 class="t-label" id="regex-matches">{c.matches}</h2>
+      <p class="t-status" class:t-bad={failed} id="regex-status" role="status" aria-live="polite">{status}</p>
       {#if matches.length}
-        <pre class="box mono" data-testid="highlight">{#each pieces as piece, i (i)}{#if piece.match === null}{piece.text}{:else}<mark
+        <pre class="t-box mono" data-testid="highlight">{#each pieces as piece, i (i)}{#if piece.match === null}{piece.text}{:else}<mark
                 class:alt={piece.match % 2 === 1}>{piece.text}</mark
               >{/if}{/each}</pre>
         <ol class="list">
@@ -151,7 +143,7 @@
                 <code>{m.text}</code>
               </p>
               {#if m.groups.length}
-                <dl class="mono">
+                <dl class="t-kv">
                   {#each m.groups as g (g.name)}
                     <dt>{fill(c.group, { name: g.name })}</dt>
                     <dd>
@@ -163,87 +155,33 @@
             </li>
           {/each}
         </ol>
-        {#if matches.length > LISTED}<p class="hint more">{fill(c.listed, { count: String(LISTED) })}</p>{/if}
+        {#if matches.length > LISTED}<p class="t-hint">{fill(c.listed, { count: String(LISTED) })}</p>{/if}
       {/if}
     </section>
 
-    {#if output?.replaced != null}
-      <section aria-labelledby="regex-result">
-        <div class="label-row">
-          <h2 id="regex-result">{c.result}</h2>
-          <button type="button" class="small mono" onclick={copy}>{copied ? c.copied : c.copy}</button>
-        </div>
-        <pre class="box mono" data-testid="replaced">{output.replaced}</pre>
-      </section>
-    {/if}
+    {#if output?.replaced != null}<Output id="replaced" label={c.result} value={output.replaced} />{/if}
   </div>
 </div>
 
 <style>
-  .tool {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
-    align-items: start;
-  }
-  .in,
-  .out {
-    display: grid;
-    gap: 1.1rem;
-  }
-  .field {
-    display: grid;
-    gap: 0.4rem;
-  }
-  label,
-  legend,
-  h2 {
-    font-family: var(--mono);
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0;
-    color: var(--muted);
-  }
-  .label-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-  input[type='text'],
-  textarea,
-  .pattern,
-  .box {
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--surface);
-    color: var(--text);
-    font-size: 0.9rem;
-    line-height: 1.6;
-  }
-  input[type='text'],
-  textarea,
-  .box {
-    padding: 0.6rem 0.75rem;
-  }
-  textarea {
-    resize: vertical;
-    min-height: 6rem;
-  }
+  /* the pattern between its slashes: one frame around the input and the flags */
   .pattern {
     display: flex;
     align-items: center;
     gap: 0.15rem;
     padding-inline: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
     color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
   }
   .pattern input {
     flex: 1;
     min-width: 0;
-    padding-inline: 0;
+    padding: 0.6rem 0;
     border: 0;
-    border-radius: 0;
     background: none;
     font: inherit;
     color: var(--text);
@@ -259,66 +197,6 @@
   .pattern.bad {
     border-color: var(--syn-num);
   }
-  .flags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 1rem;
-    margin: 0;
-    padding: 0;
-    border: 0;
-  }
-  .flags legend {
-    padding: 0;
-    margin-bottom: 0.4rem;
-  }
-  .flags label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-family: var(--font);
-    font-weight: 400;
-    font-size: 0.85rem;
-    cursor: pointer;
-  }
-  .flags input {
-    accent-color: var(--accent);
-  }
-  .flags code {
-    color: var(--accent-text);
-    font-weight: 700;
-  }
-  .hint,
-  .status {
-    font-size: 0.82rem;
-    color: var(--muted);
-  }
-  .status {
-    min-height: 1.3rem;
-    margin: 0.35rem 0 0.6rem;
-  }
-  .status.bad {
-    color: var(--syn-num);
-  }
-  .small {
-    padding: 0.15rem 0.55rem;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: var(--surface);
-    color: var(--muted);
-    font-size: 0.72rem;
-    transition:
-      color 0.2s,
-      border-color 0.2s;
-  }
-  .small:hover {
-    color: var(--accent-text);
-    border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
-  }
-  .box {
-    margin: 0;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-  }
   mark {
     border-radius: 3px;
     background: color-mix(in srgb, var(--accent) 30%, transparent);
@@ -329,14 +207,10 @@
   }
   .list {
     list-style: none;
-    margin: 0.75rem 0 0;
+    margin: 0.35rem 0 0;
     padding: 0;
     display: grid;
     gap: 0.5rem;
-  }
-  /* The results grow with their content instead of scrolling inside the page: a scrolling box can't be reached by keyboard. */
-  .more {
-    margin-top: 0.5rem;
   }
   .list li {
     padding: 0.55rem 0.75rem;
@@ -357,29 +231,18 @@
     font-weight: 700;
   }
   .at,
-  dt,
   .unset {
     color: var(--muted);
+  }
+  .unset {
+    font-style: italic;
   }
   code {
     overflow-wrap: anywhere;
     white-space: pre-wrap;
   }
   dl {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 0.15rem 0.75rem;
-    margin: 0.4rem 0 0;
-  }
-  dd {
-    margin: 0;
-  }
-  .unset {
-    font-style: italic;
-  }
-  @media (max-width: 860px) {
-    .tool {
-      grid-template-columns: 1fr;
-    }
+    margin-top: 0.4rem;
+    font-size: 0.82rem;
   }
 </style>

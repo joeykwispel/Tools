@@ -8,6 +8,8 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
+  // GitHub's runners have four cores; the default would use two of them
+  workers: process.env.CI ? 4 : undefined,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   // PW_CHANNEL=msedge (or chrome) runs against an installed browser instead of the downloaded one.
   use: { baseURL: `http://localhost:${port}`, trace: 'retain-on-failure', channel: process.env.PW_CHANNEL },
