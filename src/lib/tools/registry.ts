@@ -28,7 +28,8 @@ const built: Record<string, Tool['load']> = {
   unicode: () => import('./unicode/Tool.svelte'),
   hex: () => import('./hex/Tool.svelte'),
   escape: () => import('./escape/Tool.svelte'),
-  json: () => import('./json/Tool.svelte')
+  json: () => import('./json/Tool.svelte'),
+  yaml: () => import('./yaml/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */

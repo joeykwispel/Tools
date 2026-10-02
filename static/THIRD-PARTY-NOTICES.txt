@@ -18,3 +18,7 @@ Based on Lucide (ISC License, https://lucide.dev) and Feather (MIT License, http
 ------------------------------------------------------------------------------
 Svelte and SvelteKit (MIT License), bundled into the site
 Copyright (c) 2016-2026 Svelte contributors
+
+------------------------------------------------------------------------------
+yaml (ISC License), loaded by the YAML ↔ JSON tool
+Copyright Eemeli Aro (https://github.com/eemeli/yaml)
