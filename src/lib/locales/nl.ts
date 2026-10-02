@@ -5,7 +5,8 @@ export default {
     title: 'Tools | developertools van Joey Oosenbrug',
     description:
       'Een dashboard met developertools die in je browser draaien: wat je plakt gaat niet naar een server. Encoders, formatters, generatoren en converters, plus een handgekozen lijst met de beste tools elders. In het Nederlands en Engels.',
-    imageAlt: 'Tools: developertools die in je browser blijven'
+    imageAlt: 'Tools: developertools die in je browser blijven',
+    toolTitle: '{title} | Tools'
   },
   header: {
     home: 'joeyoosenbrug.nl',
@@ -23,7 +24,54 @@ export default {
     status: 'Binnenkort: {count} tools.'
   },
   tools: {
-    soon: 'binnenkort'
+    soon: 'binnenkort',
+    back: 'alle tools',
+    privacy: 'Draait in je browser. Wat je hier typt wordt nergens heen gestuurd.'
+  },
+  favorites: {
+    title: 'Favorieten',
+    add: 'Voeg {title} toe aan favorieten',
+    remove: 'Verwijder {title} uit favorieten'
+  },
+  auth: {
+    signIn: 'Inloggen',
+    account: 'Account',
+    title: 'Synchroniseer je favorieten',
+    why: 'Log in om je favoriete tools op elk apparaat te hebben. Alles werkt ook zonder account.',
+    google: 'Doorgaan met Google',
+    loading: 'Laden…',
+    privacy: 'Alleen je favorieten worden opgeslagen. Wat je in een tool invoert wordt nooit verstuurd.',
+    signedInAs: 'Ingelogd als {name}',
+    syncing: 'Je favorieten worden gesynchroniseerd…',
+    synced: 'Favorieten gesynchroniseerd op al je apparaten.',
+    syncError: 'Synchroniseren lukte niet. Je favorieten staan veilig op dit apparaat.',
+    signOut: 'Uitloggen',
+    cancelled: 'Het inloggen is geannuleerd.',
+    failed: 'Inloggen is mislukt. Probeer het later opnieuw.'
+  },
+  regex: {
+    pattern: 'Patroon',
+    flags: 'Flags',
+    flagNames: { g: 'globaal', i: 'hoofdletterongevoelig', m: 'meerdere regels', s: 'punt matcht nieuwe regel', u: 'unicode' },
+    text: 'Testtekst',
+    matches: 'Matches',
+    none: 'Geen matches.',
+    one: '1 match.',
+    many: '{count} matches.',
+    truncated: 'De eerste {count} matches worden getoond.',
+    empty: 'Typ een patroon om te zien wat het matcht.',
+    invalid: 'Ongeldig patroon: {message}',
+    tooSlow: 'Dit patroon duurt te lang op deze tekst en is daarom gestopt. Het doet waarschijnlijk te veel aan backtracking.',
+    match: 'Match {n}',
+    at: 'op {index}',
+    group: 'Groep {name}',
+    noValue: 'niet gematcht',
+    replaceWith: 'Vervangen door',
+    replaceHint: '$1, $<naam> en $& voegen een groep of de hele match in.',
+    result: 'Resultaat',
+    copy: 'Kopiëren',
+    copied: 'Gekopieerd',
+    sample: 'Voorbeeld'
   },
   footer: {
     madeBy: 'Gemaakt door',

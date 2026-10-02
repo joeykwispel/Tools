@@ -15,7 +15,15 @@ export const categories: Category[] = [
   { id: 'team', title: { en: 'Team', nl: 'Team' } }
 ];
 
-/** Shorthand for a tool that is planned but not built: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
+/**
+ * The tools that are built, by slug. Each is loaded only on its own page.
+ * Building a tool means adding src/lib/tools/<slug>/Tool.svelte and one line here; the rest follows from the registry.
+ */
+const built: Record<string, Tool['load']> = {
+  regex: () => import('./regex/Tool.svelte')
+};
+
+/** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
 type Planned = [slug: string, icon: string, enTitle: string, enLine: string, nlTitle: string, nlLine: string, keywords: string[]];
 
 const soon = (category: CategoryId, rows: Planned[]): Tool[] =>
@@ -26,7 +34,8 @@ const soon = (category: CategoryId, rows: Planned[]): Tool[] =>
     title: { en: enTitle, nl: nlTitle },
     description: { en: enLine, nl: nlLine },
     keywords,
-    status: 'soon'
+    status: built[slug] ? 'live' : 'soon',
+    load: built[slug]
   }));
 
 /** Every tool, the single source for the list, and later for search, routes and tests. */
@@ -496,3 +505,6 @@ export const tools: Tool[] = [
 
 /** The tools of one category, in registry order. */
 export const toolsIn = (id: CategoryId) => tools.filter((t) => t.category === id);
+
+/** A tool that is built and has a page, or undefined. */
+export const liveTool = (slug: string) => tools.find((t) => t.slug === slug && t.status === 'live');

@@ -2,7 +2,7 @@
 
 Star a tool and it is pinned for you. Without an account the favourites live in this browser. Sign in with Google and they follow you to your other devices. It works the way CodeGuessr syncs its stats: Supabase Auth (Google, PKCE) plus one small Postgres table protected by Row Level Security.
 
-**Status:** the logic, the table and their tests are in the repo. No Supabase project is connected and there is no star or sign-in button yet, so the site behaves exactly as before.
+**Status:** live. The site uses the CodeGuessr Supabase project, so one account works on both.
 
 ## Rules
 
@@ -18,7 +18,7 @@ Star a tool and it is pinned for you. Without an account the favourites live in 
 | `src/lib/favorites/logic.ts`                            | Pure functions: `toggle`, `list`, `merge`, `changedSince`, `reconcile`, `parse`, row mapping |
 | `src/lib/favorites/storage.ts`                          | `localStorage` (`tools:favorites`, `tools:favorites-owner`)                                  |
 | `src/lib/favorites/favorites.svelte.ts`                 | The store the UI reads: `favorites.has(slug)`, `.toggle(slug)`, `.slugs`, `.sync`            |
-| `src/lib/cloud/config.ts`                               | Supabase URL and anon key (empty = sign-in off)                                              |
+| `src/lib/cloud/config.ts`                               | Supabase URL and publishable key (empty = sign-in off)                                       |
 | `src/lib/cloud/supabase.ts`                             | The lazily loaded client                                                                     |
 | `src/lib/cloud/auth.svelte.ts`                          | `auth.status`, `.user`, `.error`, `.signIn()`, `.signOut()`                                  |
 | `supabase/migrations/20261002000000_tool_favorites.sql` | Table `public.tool_favorites`, its policies and the trigger                                  |
@@ -44,14 +44,26 @@ Star a tool and it is pinned for you. Without an account the favourites live in 
 
 Signing out leaves the favourites on the device.
 
+## Setup
+
+Done once, outside the code:
+
+- The project is the CodeGuessr Supabase project. The table is named `tool_favorites` so it does not clash with CodeGuessr's tables.
+- The migration was run in that project (SQL editor). A later migration is run the same way.
+- Authentication → URL configuration → Redirect URLs lists `https://tools.joeyoosenbrug.nl/**`, plus `http://localhost:5173/**` and `http://localhost:4173/**` for local work. Without the first one, Google sends you back to CodeGuessr instead of here.
+- The project URL and the publishable key are in `src/lib/cloud/config.ts`. The same host is in `connect-src` in `svelte.config.js`; change both together.
+
+## In the page
+
+- `AuthButton.svelte` in the header: the sign-in panel, or who is signed in, the sync state and sign out.
+- `FavoriteStar.svelte` on every row and on a tool's own page; the starred tools are pinned above the list.
+- `auth.init()` and `favorites.init()` run once, in the root layout's `onMount`.
+
+## Tests
+
+- `e2e/favorites.spec.ts` runs against a stand-in for Supabase and the Google round trip (`e2e/helpers.ts`); anything it does not answer is aborted, so the tests never reach the real project.
+- `e2e/site.spec.ts` checks that a signed-out visitor makes no request to another origin, also while using a tool.
+
 ## Still to do
 
-1. **Connect a project** (one time, outside the code):
-   - Use the CodeGuessr Supabase project, so there is one account for every joeyoosenbrug.nl app and Google sign-in is already set up. The table is named `tool_favorites` so it does not clash.
-   - Run the migration in that project (SQL editor, or `supabase db push`).
-   - Authentication → URL configuration: add `https://tools.joeyoosenbrug.nl/**` and `http://localhost:5173/**` to the redirect URLs.
-   - Put the project URL and the publishable (anon) key in `src/lib/cloud/config.ts`.
-2. **Content Security Policy:** add the project's own host to `connect-src` in `svelte.config.js` (`https://<ref>.supabase.co`, not a wildcard). This is the one exception to `connect-src 'self'`; the end-to-end test that checks the page only talks to its own origin gets the same exception.
-3. **UI:** a star on each tool row, a pinned row above the list, and a sign-in button in the header with a panel that says what signing in does. Call `auth.init()` and `favorites.init()` once in the root layout, in `onMount`.
-4. **Text:** the sign-in panel and a short privacy page, in English and Dutch.
-5. **End-to-end tests** against a mocked Supabase and Google round trip, as in CodeGuessr's `e2e/auth.spec.ts`: star signed out, sign in, see it sent; a removal on one device reaches the other.
+- A short privacy page, in English and Dutch.

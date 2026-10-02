@@ -5,8 +5,11 @@
   import '$lib/jo/jo-kit.css';
   import '$lib/jo/jo-header.css';
   import '../app.css';
+  import { onMount } from 'svelte';
   import { page } from '$app/state';
   import { app } from '$lib/app.svelte';
+  import { auth } from '$lib/cloud/auth.svelte';
+  import { favorites } from '$lib/favorites/favorites.svelte';
   import { localeOf } from '$lib/i18n';
   import Header from '$lib/components/Header.svelte';
   import Footer from '$lib/components/Footer.svelte';
@@ -22,6 +25,12 @@
 
   $effect(() => {
     document.documentElement.lang = app.locale;
+  });
+
+  // After the first render, so neither delays the page. Favourites work without sign-in; sign-in only adds sync.
+  onMount(() => {
+    favorites.init();
+    auth.init();
   });
 </script>
 

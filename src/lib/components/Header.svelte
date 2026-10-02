@@ -5,6 +5,7 @@
   import { t, locales } from '$lib/locales';
   import { initJoHeader } from '$lib/jo/jo-header.js';
   import type { HeaderLink } from '$lib/types';
+  import AuthButton from './AuthButton.svelte';
 
   /**
    * The joeyoosenbrug.nl header from the portfolio's design kit (docs/design-kit/header.html), 1:1.
@@ -50,6 +51,9 @@
           <kbd>Ctrl K</kbd>
         </button>
       {/if}
+
+      <!-- This app's own addition to the kit's header: the optional sign-in. -->
+      <AuthButton />
 
       <div class="jo-nav__lang" role="group" aria-label={l.language}>
         {#each locales as code (code)}

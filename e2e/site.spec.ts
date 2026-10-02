@@ -1,14 +1,5 @@
-import { expect, test, type Page } from '@playwright/test';
-
-/** Collects CSP violations and uncaught errors, so a test fails if either happens. */
-function watchErrors(page: Page) {
-  const errors: string[] = [];
-  page.on('pageerror', (e) => errors.push(e.message));
-  page.on('console', (m) => {
-    if (m.type() === 'error' && /Content Security Policy|Refused to/i.test(m.text())) errors.push(m.text());
-  });
-  return errors;
-}
+import { expect, test } from '@playwright/test';
+import { watchErrors, watchForeignRequests } from './helpers';
 
 test('home page is there in English and Dutch', async ({ page }) => {
   const errors = watchErrors(page);
@@ -24,27 +15,31 @@ test('home page is there in English and Dutch', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test('the home page lists every planned tool, in both languages, without links to pages that do not exist', async ({ page }) => {
+test('the home page lists every tool: the built one as a link, the planned ones without', async ({ page }) => {
   await page.goto('/');
   const rows = page.locator('main li[data-status]');
   await expect(rows).toHaveCount(55);
-  await expect(page.locator('main li[data-status="soon"]')).toHaveCount(55);
+  await expect(page.locator('main li[data-status="live"]')).toHaveCount(1);
+  await expect(page.getByText('Coming soon: 54 tools.')).toBeVisible();
   await expect(page.getByRole('heading', { level: 2, name: 'Encode / decode' })).toBeVisible();
   const jwt = rows.filter({ has: page.getByRole('heading', { level: 3, name: 'JWT decoder', exact: true }) });
   await expect(jwt).toContainText('soon');
-  await expect(page.locator('main a')).toHaveCount(0);
+  await expect(page.locator('main li[data-status="soon"] a')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Regex tester' })).toHaveAttribute('href', '/regex/');
 
   await page.goto('/nl/');
   await expect(page.getByRole('heading', { level: 2, name: 'Coderen / decoderen' })).toBeVisible();
   await expect(page.getByRole('heading', { level: 3, name: 'JWT-decoder', exact: true })).toBeVisible();
-  await expect(page.locator('main li[data-status]').first()).toContainText('binnenkort');
+  await expect(page.locator('main li[data-status="soon"]').first()).toContainText('binnenkort');
+  await expect(page.getByRole('link', { name: 'Regex-tester' })).toHaveAttribute('href', '/nl/regex/');
 });
 
 test('language switch keeps the page and is remembered', async ({ page, isMobile }) => {
   test.skip(isMobile, 'the switch is the same component on mobile');
-  await page.goto('/');
+  await page.goto('/regex/');
   await page.getByRole('link', { name: 'NL', exact: true }).click();
-  await expect(page).toHaveURL(/\/nl\/$/);
+  await expect(page).toHaveURL(/\/nl\/regex\/$/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Regex-tester');
   await page.goto('/');
   await expect(page).toHaveURL(/\/nl\/$/);
 });
@@ -58,26 +53,31 @@ test('the theme button switches the theme and it survives a reload', async ({ pa
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
 });
 
-test('an unknown address shows the 404 page with a way back', async ({ page }) => {
-  const res = await page.goto('/no-such-tool/');
-  expect(res?.status()).toBe(404);
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('404');
+test('an unknown address, or a tool that is not built yet, shows the 404 page with a way back', async ({ page }) => {
+  for (const path of ['/no-such-tool/', '/jwt/']) {
+    const res = await page.goto(path);
+    expect(res?.status()).toBe(404);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('404');
+  }
   await page.getByRole('link', { name: /cd ~/ }).click();
   await expect(page).toHaveURL(/localhost:\d+\/$/);
 });
 
-test('the page only talks to its own origin', async ({ page, baseURL }) => {
-  const foreign: string[] = [];
-  page.on('request', (r) => {
-    const url = r.url();
-    if (!url.startsWith(baseURL!) && !url.startsWith('data:') && !url.startsWith('blob:')) foreign.push(url);
-  });
+test('signed out, the site only talks to its own origin, also while a tool is used', async ({ page, baseURL }) => {
+  const foreign = watchForeignRequests(page, baseURL!);
   await page.goto('/');
+  // the sign-in button is there, so the auth library has loaded and found no session
+  await expect(page.getByRole('button', { name: 'Sign in' })).toBeVisible();
+  await page.getByRole('button', { name: 'Add Regex tester to favourites' }).first().click();
+  await page.goto('/regex/');
+  await page.getByLabel('Test text').fill('a secret: hunter2');
+  await page.getByLabel('Pattern').fill('hunter\\d');
+  await expect(page.getByRole('status')).toHaveText('1 match.');
   await page.waitForLoadState('networkidle');
   expect(foreign).toEqual([]);
   // the policy that enforces it is in the page itself, because GitHub Pages can't send headers
   const csp = await page.locator('meta[http-equiv="content-security-policy"]').getAttribute('content');
-  expect(csp).toContain("connect-src 'self'");
+  expect(csp).toMatch(/connect-src 'self' https:\/\/[a-z]+\.supabase\.co(;|$)/);
 });
 
 test('the share image exists', async ({ page, request }) => {

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { app } from '$lib/app.svelte';
+  import { favorites } from '$lib/favorites/favorites.svelte';
   import { fill, t } from '$lib/locales';
   import { categories, tools, toolsIn } from '$lib/tools/registry';
   import ToolRow from '$lib/components/dash/ToolRow.svelte';
@@ -7,6 +8,8 @@
 
   const c = $derived(t(app.locale));
   const planned = tools.filter((tool) => tool.status === 'soon').length;
+  // a favourite of a tool that no longer exists is simply not shown
+  const starred = $derived(favorites.slugs.flatMap((slug) => tools.find((tool) => tool.slug === slug) ?? []));
 </script>
 
 <Seo title={c.meta.title} description={c.meta.description} imageAlt={c.meta.imageAlt} />
@@ -21,9 +24,24 @@
 </section>
 
 <div class="container list">
+  {#if starred.length}
+    <section aria-labelledby="cat-favorites" data-testid="favorites">
+      <h2 class="mono" id="cat-favorites">
+        <span class="com" aria-hidden="true">//</span>
+        {c.favorites.title}
+        <span class="n" aria-hidden="true">{starred.length}</span>
+      </h2>
+      <ul>
+        {#each starred as tool (tool.slug)}
+          <ToolRow {tool} />
+        {/each}
+      </ul>
+    </section>
+  {/if}
+
   {#each categories as category (category.id)}
     {@const items = toolsIn(category.id)}
-    <section aria-labelledby="cat-{category.id}">
+    <section aria-labelledby="cat-{category.id}" data-category={category.id}>
       <h2 class="mono" id="cat-{category.id}">
         <span class="com" aria-hidden="true">//</span>
         {category.title[app.locale]}
