@@ -27,6 +27,13 @@ export default {
     back: 'all tools',
     privacy: 'Runs in your browser. Nothing you type here is sent anywhere.'
   },
+  menu: {
+    placeholder: 'Search tools…',
+    tools: 'Tools',
+    results: 'Results',
+    none: 'No tool matches “{query}”.',
+    hint: '↑↓ move · Enter open · Esc close'
+  },
   favorites: {
     title: 'Favourites',
     add: 'Add {title} to favourites',

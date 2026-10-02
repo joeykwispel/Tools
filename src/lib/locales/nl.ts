@@ -28,6 +28,13 @@ export default {
     back: 'alle tools',
     privacy: 'Draait in je browser. Wat je hier typt wordt nergens heen gestuurd.'
   },
+  menu: {
+    placeholder: 'Zoek een tool…',
+    tools: 'Tools',
+    results: 'Resultaten',
+    none: 'Geen tool gevonden voor “{query}”.',
+    hint: '↑↓ kiezen · Enter openen · Esc sluiten'
+  },
   favorites: {
     title: 'Favorieten',
     add: 'Voeg {title} toe aan favorieten',
