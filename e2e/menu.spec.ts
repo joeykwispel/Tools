@@ -1,10 +1,11 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { watchErrors } from './helpers';
+import { open, watchErrors } from './helpers';
+import { live, soon } from './live';
 
 test('Ctrl K opens the command menu; typing finds a tool and Enter opens it', async ({ page }) => {
   const errors = watchErrors(page);
-  await page.goto('/');
+  await open(page, '/');
   await page.keyboard.press('Control+k');
   const menu = page.getByRole('dialog', { name: 'Command menu' });
   await expect(menu).toBeVisible();
@@ -21,31 +22,49 @@ test('Ctrl K opens the command menu; typing finds a tool and Enter opens it', as
   expect(errors).toEqual([]);
 });
 
-test('the menu shows favourites first, and Escape closes it', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Add JWT decoder to favourites' }).click();
+test('the menu shows favourites first, then the other built tools; arrows move and Escape closes it', async ({ page }) => {
+  await open(page, '/');
+  await page.getByRole('button', { name: 'Add Regex tester to favourites' }).click();
   await page.getByRole('button', { name: 'Command menu' }).click();
   const menu = page.getByRole('dialog', { name: 'Command menu' });
   const favourites = menu.getByRole('group', { name: 'Favourites' });
-  await expect(favourites.getByRole('option')).toHaveText([/JWT decoder/]);
-  await expect(menu.getByRole('group', { name: 'Tools' }).getByRole('option').first()).toContainText('Regex tester');
+  await expect(favourites.getByRole('option')).toHaveText([/Regex tester/]);
+  await expect(favourites.getByRole('option')).toHaveAttribute('aria-selected', 'true');
 
-  // a planned tool is shown, but it has no page to open
-  await expect(favourites.getByRole('option')).toHaveAttribute('aria-disabled', 'true');
-  await page.keyboard.press('Enter');
-  await expect(menu).toBeVisible();
-  await expect(page).toHaveURL(/localhost:\d+\/$/);
+  // every other built tool follows, without the favourite a second time
+  const others = menu.getByRole('group', { name: 'Tools' }).getByRole('option');
+  await expect(others).toHaveCount(live.length - 1);
+  await expect(menu.getByRole('option')).toHaveCount(live.length);
 
-  // arrow down to the built tool and open it
-  await page.keyboard.press('ArrowDown');
-  await expect(menu.getByRole('option', { selected: true })).toContainText('Regex tester');
+  if (live.length > 1) {
+    await page.keyboard.press('ArrowDown');
+    await expect(others.first()).toHaveAttribute('aria-selected', 'true');
+    await page.keyboard.press('ArrowUp');
+  }
+  await expect(favourites.getByRole('option')).toHaveAttribute('aria-selected', 'true');
+
   await page.keyboard.press('Escape');
   await expect(menu).toBeHidden();
   await expect(page).toHaveURL(/localhost:\d+\/$/);
 });
 
+test('a planned tool is found by search, but has no page to open', async ({ page }) => {
+  test.skip(!soon.length, 'every tool is built');
+  await open(page, '/');
+  await page.keyboard.press('Control+k');
+  const menu = page.getByRole('dialog', { name: 'Command menu' });
+  await menu.getByRole('combobox').fill(soon[0].title.en);
+  const first = menu.getByRole('option').first();
+  await expect(first).toContainText(soon[0].title.en);
+  await expect(first).toContainText('soon');
+  await expect(first).toHaveAttribute('aria-disabled', 'true');
+  await page.keyboard.press('Enter');
+  await expect(menu).toBeVisible();
+  await expect(page).toHaveURL(/localhost:\d+\/$/);
+});
+
 test('a search without results says so, and the menu speaks Dutch', async ({ page }) => {
-  await page.goto('/nl/');
+  await open(page, '/nl/');
   await page.keyboard.press('Control+k');
   const menu = page.getByRole('dialog', { name: 'Commandomenu' });
   await menu.getByRole('combobox').fill('wachtwoord');
@@ -63,10 +82,14 @@ for (const theme of ['dark', 'light'] as const) {
   test(`the open command menu has no serious accessibility issues (${theme})`, async ({ page }) => {
     await page.addInitScript((t) => localStorage.setItem('theme', t), theme);
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('/');
-    await page.getByRole('button', { name: 'Add JWT decoder to favourites' }).click();
+    await open(page, '/');
+    await page.getByRole('button', { name: 'Add Regex tester to favourites' }).click();
     await page.keyboard.press('Control+k');
-    await expect(page.getByRole('dialog', { name: 'Command menu' })).toBeVisible();
+    const menu = page.getByRole('dialog', { name: 'Command menu' });
+    await expect(menu).toBeVisible();
+    // with a query the list also holds planned tools, which look different
+    await menu.getByRole('combobox').fill('e');
+    await expect(menu.getByRole('option').first()).toBeVisible();
     const { violations } = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
     const serious = violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
     expect(serious.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);
