@@ -55,7 +55,8 @@ const built: Record<string, Tool['load']> = {
   csp: () => import('./csp/Tool.svelte'),
   timestamp: () => import('./timestamp/Tool.svelte'),
   cron: () => import('./cron/Tool.svelte'),
-  'date-diff': () => import('./date-diff/Tool.svelte')
+  'date-diff': () => import('./date-diff/Tool.svelte'),
+  timezone: () => import('./timezone/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
