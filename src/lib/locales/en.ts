@@ -20,7 +20,9 @@ export default {
   hero: {
     title: 'Developer tools,',
     titleAccent: 'in your browser.',
-    status: 'Coming soon: {count} tools.'
+    status: 'Coming soon: {count} tools.',
+    available: 'Tools available now: {count}.',
+    availableOnly: 'Available only'
   },
   tools: {
     soon: 'soon',

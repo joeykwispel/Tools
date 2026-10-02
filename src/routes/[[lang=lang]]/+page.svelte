@@ -2,14 +2,20 @@
   import { app } from '$lib/app.svelte';
   import { favorites } from '$lib/favorites/favorites.svelte';
   import { fill, t } from '$lib/locales';
+  import { prefs } from '$lib/state/prefs.svelte';
   import { categories, tools, toolsIn } from '$lib/tools/registry';
+  import type { Tool } from '$lib/tools/types';
   import ToolRow from '$lib/components/dash/ToolRow.svelte';
   import Seo from '$lib/components/Seo.svelte';
 
   const c = $derived(t(app.locale));
   const planned = tools.filter((tool) => tool.status === 'soon').length;
+  const available = tools.length - planned;
+  /** With "available only" on, a tool that is not built yet is left out everywhere on this page. */
+  const shown = (tool: Tool) => !prefs.availableOnly || tool.status === 'live';
   // a favourite of a tool that no longer exists is simply not shown
-  const starred = $derived(favorites.slugs.flatMap((slug) => tools.find((tool) => tool.slug === slug) ?? []));
+  const starred = $derived(favorites.slugs.flatMap((slug) => tools.find((tool) => tool.slug === slug) ?? []).filter(shown));
+  const groups = $derived(categories.map((category) => ({ category, items: toolsIn(category.id).filter(shown) })).filter((group) => group.items.length));
 </script>
 
 <Seo title={c.meta.title} description={c.meta.description} imageAlt={c.meta.imageAlt} />
@@ -19,7 +25,13 @@
   <div class="container">
     <p class="kicker mono"><span class="prop">joey@tools</span>:<span class="dir">~</span>$ ls<span class="caret" aria-hidden="true"></span></p>
     <h1>{c.hero.title} <span class="grad">{c.hero.titleAccent}</span></h1>
-    {#if planned}<p class="status mono"><span class="com">//</span> {fill(c.hero.status, { count: String(planned) })}</p>{/if}
+    {#if planned}
+      <p class="status mono">
+        <span class="com">//</span>
+        {fill(prefs.availableOnly ? c.hero.available : c.hero.status, { count: String(prefs.availableOnly ? available : planned) })}
+        <button type="button" class="t-small" aria-pressed={prefs.availableOnly} onclick={() => prefs.toggleAvailableOnly()}>{c.hero.availableOnly}</button>
+      </p>
+    {/if}
   </div>
 </section>
 
@@ -39,8 +51,7 @@
     </section>
   {/if}
 
-  {#each categories as category (category.id)}
-    {@const items = toolsIn(category.id)}
+  {#each groups as { category, items } (category.id)}
     <section aria-labelledby="cat-{category.id}" data-category={category.id}>
       <h2 class="mono" id="cat-{category.id}">
         <span class="com" aria-hidden="true">//</span>
@@ -82,6 +93,11 @@
     color: transparent;
   }
   .status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem 0.6rem;
     margin: 1rem auto 0;
     font-size: 0.85rem;
     color: var(--muted);

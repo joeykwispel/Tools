@@ -21,7 +21,9 @@ export default {
   hero: {
     title: 'Developertools,',
     titleAccent: 'in je browser.',
-    status: 'Binnenkort: {count} tools.'
+    status: 'Binnenkort: {count} tools.',
+    available: 'Tools nu beschikbaar: {count}.',
+    availableOnly: 'Alleen beschikbaar'
   },
   tools: {
     soon: 'binnenkort',

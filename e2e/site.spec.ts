@@ -34,6 +34,35 @@ test('the home page lists every tool: the built one as a link, the planned ones 
   await expect(page.getByRole('link', { name: 'Regex-tester' })).toHaveAttribute('href', '/nl/regex/');
 });
 
+test('"Available only" hides the tools that are not built yet, and is remembered', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('main li[data-status]')).toHaveCount(55);
+  const built = await page.locator('main li[data-status="live"]').count();
+  const toggle = page.getByRole('button', { name: 'Available only' });
+  await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+
+  // a favourite that is not built yet goes too
+  await page.getByRole('button', { name: 'Add JWT decoder to favourites' }).click();
+  await expect(page.getByTestId('favorites')).toBeVisible();
+
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('main li[data-status="soon"]')).toHaveCount(0);
+  await expect(page.locator('main li[data-status="live"]')).toHaveCount(built);
+  await expect(page.getByText(`Tools available now: ${built}.`)).toBeVisible();
+  await expect(page.getByTestId('favorites')).toHaveCount(0);
+  // a category without a built tool is left out, heading and all
+  await expect(page.getByRole('heading', { level: 2 })).toHaveCount(await page.locator('main section:has(li[data-status="live"])').count());
+
+  await page.reload();
+  await expect(page.getByRole('button', { name: 'Available only' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('main li[data-status="soon"]')).toHaveCount(0);
+
+  await page.getByRole('button', { name: 'Available only' }).click();
+  await expect(page.locator('main li[data-status]')).toHaveCount(56);
+  await expect(page.getByText('Coming soon:')).toBeVisible();
+});
+
 test('language switch keeps the page and is remembered', async ({ page, isMobile }) => {
   test.skip(isMobile, 'the switch is the same component on mobile');
   await page.goto('/regex/');
