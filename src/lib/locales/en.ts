@@ -58,6 +58,7 @@ export default {
     one: '1 match.',
     many: '{count} matches.',
     truncated: 'Showing the first {count} matches.',
+    listed: 'The first {count} matches are listed; all of them are highlighted above.',
     empty: 'Type a pattern to see what it matches.',
     invalid: 'Invalid pattern: {message}',
     tooSlow: 'This pattern takes too long on this text, so it was stopped. It probably backtracks too much.',

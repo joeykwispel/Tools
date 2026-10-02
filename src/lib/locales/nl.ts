@@ -59,6 +59,7 @@ export default {
     one: '1 match.',
     many: '{count} matches.',
     truncated: 'De eerste {count} matches worden getoond.',
+    listed: 'De eerste {count} matches staan in de lijst; hierboven zijn ze allemaal gemarkeerd.',
     empty: 'Typ een patroon om te zien wat het matcht.',
     invalid: 'Ongeldig patroon: {message}',
     tooSlow: 'Dit patroon duurt te lang op deze tekst en is daarom gestopt. Het doet waarschijnlijk te veel aan backtracking.',

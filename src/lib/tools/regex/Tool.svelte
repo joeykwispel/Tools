@@ -13,7 +13,7 @@
   /** How long a pattern may run before it is stopped. */
   const TIME_LIMIT = 1500;
   /** The list under the text shows this many matches in full; the highlighting shows all of them. */
-  const LISTED = 50;
+  const LISTED = 20;
 
   const c = $derived(t(app.locale).regex);
 
@@ -163,6 +163,7 @@
             </li>
           {/each}
         </ol>
+        {#if matches.length > LISTED}<p class="hint more">{fill(c.listed, { count: String(LISTED) })}</p>{/if}
       {/if}
     </section>
 
@@ -317,8 +318,6 @@
     margin: 0;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
-    max-height: 16rem;
-    overflow: auto;
   }
   mark {
     border-radius: 3px;
@@ -334,8 +333,10 @@
     padding: 0;
     display: grid;
     gap: 0.5rem;
-    max-height: 22rem;
-    overflow: auto;
+  }
+  /* The results grow with their content instead of scrolling inside the page: a scrolling box can't be reached by keyboard. */
+  .more {
+    margin-top: 0.5rem;
   }
   .list li {
     padding: 0.55rem 0.75rem;
