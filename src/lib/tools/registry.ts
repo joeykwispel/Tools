@@ -59,7 +59,8 @@ const built: Record<string, Tool['load']> = {
   timezone: () => import('./timezone/Tool.svelte'),
   colour: () => import('./colour/Tool.svelte'),
   contrast: () => import('./contrast/Tool.svelte'),
-  clamp: () => import('./clamp/Tool.svelte')
+  clamp: () => import('./clamp/Tool.svelte'),
+  gradient: () => import('./gradient/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
