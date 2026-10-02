@@ -30,7 +30,8 @@ const built: Record<string, Tool['load']> = {
   escape: () => import('./escape/Tool.svelte'),
   json: () => import('./json/Tool.svelte'),
   yaml: () => import('./yaml/Tool.svelte'),
-  'json-to-ts': () => import('./json-to-ts/Tool.svelte')
+  'json-to-ts': () => import('./json-to-ts/Tool.svelte'),
+  diff: () => import('./diff/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */

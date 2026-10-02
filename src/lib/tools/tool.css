@@ -44,6 +44,8 @@
   color: var(--muted);
 }
 .t-row {
+  /* as tall as a small button, so a label with buttons and one without line up side by side */
+  min-height: 1.6rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
