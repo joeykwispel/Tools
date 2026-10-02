@@ -42,7 +42,8 @@ const built: Record<string, Tool['load']> = {
   case: () => import('./case/Tool.svelte'),
   counter: () => import('./counter/Tool.svelte'),
   lines: () => import('./lines/Tool.svelte'),
-  markdown: () => import('./markdown/Tool.svelte')
+  markdown: () => import('./markdown/Tool.svelte'),
+  slug: () => import('./slug/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
