@@ -24,7 +24,8 @@ const built: Record<string, Tool['load']> = {
   base64: () => import('./base64/Tool.svelte'),
   url: () => import('./url/Tool.svelte'),
   jwt: () => import('./jwt/Tool.svelte'),
-  'html-entities': () => import('./html-entities/Tool.svelte')
+  'html-entities': () => import('./html-entities/Tool.svelte'),
+  unicode: () => import('./unicode/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
