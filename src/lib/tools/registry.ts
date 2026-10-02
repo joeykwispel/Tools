@@ -38,7 +38,8 @@ const built: Record<string, Tool['load']> = {
   env: () => import('./env/Tool.svelte'),
   xml: () => import('./xml/Tool.svelte'),
   xpath: () => import('./xpath/Tool.svelte'),
-  'xml-json': () => import('./xml-json/Tool.svelte')
+  'xml-json': () => import('./xml-json/Tool.svelte'),
+  case: () => import('./case/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
