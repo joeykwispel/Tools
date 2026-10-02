@@ -12,6 +12,7 @@
   import { auth } from '$lib/cloud/auth.svelte';
   import { favorites } from '$lib/favorites/favorites.svelte';
   import { localeOf } from '$lib/i18n';
+  import { prefs } from '$lib/state/prefs.svelte';
   import CommandMenu from '$lib/components/CommandMenu.svelte';
   import Header from '$lib/components/Header.svelte';
   import Footer from '$lib/components/Footer.svelte';
@@ -32,6 +33,7 @@
 
   // After the first render, so neither delays the page. Favourites work without sign-in; sign-in only adds sync.
   onMount(() => {
+    prefs.init();
     favorites.init();
     auth.init();
   });
