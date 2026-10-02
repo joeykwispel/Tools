@@ -24,6 +24,22 @@ test('home page is there in English and Dutch', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test('the home page lists every planned tool, in both languages, without links to pages that do not exist', async ({ page }) => {
+  await page.goto('/');
+  const rows = page.locator('main li[data-status]');
+  await expect(rows).toHaveCount(55);
+  await expect(page.locator('main li[data-status="soon"]')).toHaveCount(55);
+  await expect(page.getByRole('heading', { level: 2, name: 'Encode / decode' })).toBeVisible();
+  const jwt = rows.filter({ has: page.getByRole('heading', { level: 3, name: 'JWT decoder', exact: true }) });
+  await expect(jwt).toContainText('soon');
+  await expect(page.locator('main a')).toHaveCount(0);
+
+  await page.goto('/nl/');
+  await expect(page.getByRole('heading', { level: 2, name: 'Coderen / decoderen' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 3, name: 'JWT-decoder', exact: true })).toBeVisible();
+  await expect(page.locator('main li[data-status]').first()).toContainText('binnenkort');
+});
+
 test('language switch keeps the page and is remembered', async ({ page, isMobile }) => {
   test.skip(isMobile, 'the switch is the same component on mobile');
   await page.goto('/');

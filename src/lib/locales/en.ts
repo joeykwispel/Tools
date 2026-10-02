@@ -19,7 +19,10 @@ export default {
   hero: {
     title: 'Developer tools,',
     titleAccent: 'in your browser.',
-    status: 'The first tools are on their way.'
+    status: 'Coming soon: {count} tools.'
+  },
+  tools: {
+    soon: 'soon'
   },
   footer: {
     madeBy: 'Made by',
