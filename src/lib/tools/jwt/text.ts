@@ -1,0 +1,91 @@
+const en = {
+  token: 'Token',
+  header: 'Header',
+  payload: 'Payload',
+  claims: 'Claims',
+  claim: 'Claim',
+  value: 'Value',
+  meaning: 'Meaning',
+  claimNames: {
+    iss: 'Issuer',
+    sub: 'Subject',
+    aud: 'Audience',
+    exp: 'Expires',
+    nbf: 'Not valid before',
+    iat: 'Issued at',
+    jti: 'Token ID'
+  } as Record<string, string>,
+  badParts: 'This is not a JWT: it should be three parts separated by dots (header.payload.signature).',
+  badBase64: 'The {part} is not valid Base64URL.',
+  badJson: 'The {part} is not a JSON object.',
+  parts: { header: 'header', payload: 'payload', signature: 'signature' },
+  empty: 'Paste a token to see what is in it.',
+  noExpiry: 'This token has no expiry (exp).',
+  valid: 'Valid for another {time}.',
+  expired: 'Expired {time} ago.',
+  notYet: 'Not valid yet: it starts in {time}.',
+  algorithm: 'Algorithm',
+  algNone: 'This token is not signed (alg "none"). Anyone can change it; never accept it.',
+  algUnknown: 'Unknown algorithm.',
+  algSafe: '{alg}: not broken by a quantum computer.',
+  algNotSafe: '{alg}: a large quantum computer could forge this signature. Plan to move to a post-quantum algorithm such as ML-DSA.',
+  signature: 'Signature',
+  secret: 'Secret',
+  publicKey: 'Public key (PEM or JWK)',
+  keyHint: 'The key stays in this tab; the signature is checked by your browser.',
+  verdicts: {
+    valid: 'The signature is valid.',
+    invalid: 'The signature does not match: wrong key, or the token was changed.',
+    unsigned: 'There is no signature to check.',
+    'no-key': 'Enter the key to check the signature.',
+    'bad-key': 'This key can not be read, or it does not fit the algorithm.',
+    unsupported: 'Your browser can not check this algorithm.'
+  }
+};
+
+const nl: typeof en = {
+  token: 'Token',
+  header: 'Header',
+  payload: 'Payload',
+  claims: 'Claims',
+  claim: 'Claim',
+  value: 'Waarde',
+  meaning: 'Betekenis',
+  claimNames: {
+    iss: 'Uitgever',
+    sub: 'Onderwerp',
+    aud: 'Doelgroep',
+    exp: 'Verloopt',
+    nbf: 'Niet geldig vóór',
+    iat: 'Uitgegeven op',
+    jti: 'Token-ID'
+  },
+  badParts: 'Dit is geen JWT: het moeten drie delen zijn, gescheiden door punten (header.payload.signature).',
+  badBase64: 'De {part} is geen geldige Base64URL.',
+  badJson: 'De {part} is geen JSON-object.',
+  parts: { header: 'header', payload: 'payload', signature: 'handtekening' },
+  empty: 'Plak een token om te zien wat erin staat.',
+  noExpiry: 'Dit token heeft geen verloopdatum (exp).',
+  valid: 'Nog {time} geldig.',
+  expired: '{time} geleden verlopen.',
+  notYet: 'Nog niet geldig: het gaat in over {time}.',
+  algorithm: 'Algoritme',
+  algNone: 'Dit token is niet ondertekend (alg "none"). Iedereen kan het aanpassen; accepteer het nooit.',
+  algUnknown: 'Onbekend algoritme.',
+  algSafe: '{alg}: wordt niet gebroken door een kwantumcomputer.',
+  algNotSafe: '{alg}: een grote kwantumcomputer kan deze handtekening vervalsen. Plan de overstap naar een post-quantum-algoritme zoals ML-DSA.',
+  signature: 'Handtekening',
+  secret: 'Secret',
+  publicKey: 'Publieke sleutel (PEM of JWK)',
+  keyHint: 'De sleutel blijft in dit tabblad; je browser controleert de handtekening.',
+  verdicts: {
+    valid: 'De handtekening klopt.',
+    invalid: 'De handtekening klopt niet: verkeerde sleutel, of het token is aangepast.',
+    unsigned: 'Er is geen handtekening om te controleren.',
+    'no-key': 'Vul de sleutel in om de handtekening te controleren.',
+    'bad-key': 'Deze sleutel is niet te lezen, of past niet bij het algoritme.',
+    unsupported: 'Je browser kan dit algoritme niet controleren.'
+  }
+};
+
+export default { en, nl };

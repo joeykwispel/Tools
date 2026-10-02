@@ -22,7 +22,8 @@ export const categories: Category[] = [
 const built: Record<string, Tool['load']> = {
   regex: () => import('./regex/Tool.svelte'),
   base64: () => import('./base64/Tool.svelte'),
-  url: () => import('./url/Tool.svelte')
+  url: () => import('./url/Tool.svelte'),
+  jwt: () => import('./jwt/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
