@@ -64,7 +64,8 @@ const built: Record<string, Tool['load']> = {
   bezier: () => import('./bezier/Tool.svelte'),
   svg: () => import('./svg/Tool.svelte'),
   image: () => import('./image/Tool.svelte'),
-  'og-preview': () => import('./og-preview/Tool.svelte')
+  'og-preview': () => import('./og-preview/Tool.svelte'),
+  'url-parser': () => import('./url-parser/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
