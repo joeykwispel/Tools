@@ -68,7 +68,8 @@ const built: Record<string, Tool['load']> = {
   'url-parser': () => import('./url-parser/Tool.svelte'),
   curl: () => import('./curl/Tool.svelte'),
   'http-status': () => import('./http-status/Tool.svelte'),
-  'user-agent': () => import('./user-agent/Tool.svelte')
+  'user-agent': () => import('./user-agent/Tool.svelte'),
+  browser: () => import('./browser/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
