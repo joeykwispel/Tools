@@ -71,7 +71,8 @@ const built: Record<string, Tool['load']> = {
   'user-agent': () => import('./user-agent/Tool.svelte'),
   browser: () => import('./browser/Tool.svelte'),
   calculators: () => import('./calculators/Tool.svelte'),
-  'dutch-test-data': () => import('./dutch-test-data/Tool.svelte')
+  'dutch-test-data': () => import('./dutch-test-data/Tool.svelte'),
+  'planning-poker': () => import('./planning-poker/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
