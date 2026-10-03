@@ -73,7 +73,8 @@ const built: Record<string, Tool['load']> = {
   calculators: () => import('./calculators/Tool.svelte'),
   'dutch-test-data': () => import('./dutch-test-data/Tool.svelte'),
   'planning-poker': () => import('./planning-poker/Tool.svelte'),
-  timebox: () => import('./timebox/Tool.svelte')
+  timebox: () => import('./timebox/Tool.svelte'),
+  'random-picker': () => import('./random-picker/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
