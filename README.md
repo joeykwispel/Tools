@@ -10,11 +10,27 @@ A dashboard of developer tools: the small tools a developer keeps reaching for, 
 
 1. **What you put into a tool stays in the browser.** Every tool runs client-side. The Content Security Policy lets the page talk to itself and to one other host: the Supabase project behind the optional sign-in, which only ever receives your favourites.
 2. **One file per tool, one registry.** Search, cards, routes, tests and translations all follow from the registry.
-3. **Useful on day one.** The dashboard is a start page before the last tool is built.
+3. **Useful on day one.** The dashboard was a start page before the last tool was built, and takes a new tool the same way: listed first, built after.
 
 ## Status
 
-The first tool is built: the [regex tester](https://tools.joeyoosenbrug.nl/regex/). The other planned tools are listed as coming soon. Both come from `src/lib/tools/registry.ts`.
+All 55 tools in `src/lib/tools/registry.ts` are built, each in English and Dutch:
+
+| Category            | Tools                                                                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Encode / decode     | Base64, URL encode / decode, JWT decoder, HTML entities, Unicode inspector, Hex / Base32, String escape                                          |
+| Data & formats      | JSON formatter, YAML ↔ JSON, JSON → TypeScript, Diff, CSV viewer, JSONPath tester, SQL formatter, .env ↔ JSON                                    |
+| XML                 | XML formatter, XPath tester, XML ↔ JSON                                                                                                          |
+| Text                | Regex tester, Case converter, Counter, Lines, Markdown preview, Slug + lorem ipsum                                                               |
+| Generate & security | UUID / ULID / NanoID, Password generator, Hash, HMAC, Certificate decoder, QR code, TOTP generator, SRI hash, CSP builder                        |
+| Date & time         | Unix timestamp, Cron explainer, Date difference, Timezone planner                                                                                |
+| Front-end & CSS     | Colour converter, Contrast checker, clamp() calculator, Gradient + shadow, Cubic-bezier editor, SVG optimiser, Image resizer, Open Graph preview |
+| Web & HTTP          | URL parser, curl → fetch, HTTP status + MIME, User-agent parser                                                                                  |
+| Dev reference       | This browser, Calculators (number bases, chmod, data sizes, CIDR, semver)                                                                        |
+| Dutch test data     | BSN, IBAN and postcode: check and generate                                                                                                       |
+| Team                | Planning poker, Timebox timer, Random picker                                                                                                     |
+
+A tool is a folder in `src/lib/tools/<slug>/` with `Tool.svelte`, `text.ts`, `logic.ts` and `logic.test.ts`, a test in `e2e/tools/<slug>.spec.ts`, and one line in the registry. A tool that is in the registry without that line is listed as coming soon.
 
 You can star tools; the favourites are pinned at the top. They live in your browser, and sync across devices if you sign in with Google ([how that works](docs/favorites.md)).
 
@@ -40,6 +56,8 @@ npm run preview      # serves dist/ the way GitHub Pages does
 | `npm run test:unit` | Vitest                                                         |
 | `npm run test:e2e`  | Playwright + axe on the build, desktop and mobile, both themes |
 | `npm run og`        | Regenerates static/og.png (share image and README banner)      |
+
+The end-to-end tests run against `dist/`, so build first. `PW_CHANNEL=chrome npm run test:e2e` uses an installed Chrome instead of Playwright's download.
 
 ## Workflow
 
