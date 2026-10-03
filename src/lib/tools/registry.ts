@@ -70,7 +70,8 @@ const built: Record<string, Tool['load']> = {
   'http-status': () => import('./http-status/Tool.svelte'),
   'user-agent': () => import('./user-agent/Tool.svelte'),
   browser: () => import('./browser/Tool.svelte'),
-  calculators: () => import('./calculators/Tool.svelte')
+  calculators: () => import('./calculators/Tool.svelte'),
+  'dutch-test-data': () => import('./dutch-test-data/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
