@@ -62,7 +62,8 @@ const built: Record<string, Tool['load']> = {
   clamp: () => import('./clamp/Tool.svelte'),
   gradient: () => import('./gradient/Tool.svelte'),
   bezier: () => import('./bezier/Tool.svelte'),
-  svg: () => import('./svg/Tool.svelte')
+  svg: () => import('./svg/Tool.svelte'),
+  image: () => import('./image/Tool.svelte')
 };
 
 /** Shorthand for one tool: [slug, icon, English title, English line, Dutch title, Dutch line, keywords]. */
