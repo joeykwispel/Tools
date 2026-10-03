@@ -1,0 +1,51 @@
+const en = {
+  duration: 'Timebox',
+  durationHint: 'Minutes (5), minutes and seconds (1:30), or with a unit: 90s, 2m, 1h.',
+  durationError: 'This is not a time: try 5, 1:30 or 90s, up to a day.',
+  presets: 'Common ones',
+  minutes: '{minutes} min',
+  people: 'Turns',
+  peopleHint: 'For a stand-up: how many people get a turn of this long. Leave it at 0 for one timebox.',
+  sound: 'Beep when the time is up',
+  time: 'Time left',
+  start: 'Start',
+  resume: 'Go on',
+  pause: 'Pause',
+  reset: 'Reset',
+  next: 'Next turn',
+  ready: 'Ready: {time}.',
+  runs: 'Running.',
+  paused: 'Paused at {time}.',
+  over: 'Time is up.',
+  turn: 'Turn {turn} of {people}.',
+  done: 'That was the last turn.',
+  total: 'In all',
+  hint: 'The time is taken from the clock, so it stays right when the tab is in the background.'
+};
+
+const nl: typeof en = {
+  duration: 'Timebox',
+  durationHint: 'Minuten (5), minuten en seconden (1:30), of met een eenheid: 90s, 2m, 1u.',
+  durationError: 'Dit is geen tijd: probeer 5, 1:30 of 90s, tot een dag.',
+  presets: 'Veelgebruikt',
+  minutes: '{minutes} min',
+  people: 'Beurten',
+  peopleHint: 'Voor een stand-up: hoeveel mensen een beurt van deze lengte krijgen. Laat het op 0 voor één timebox.',
+  sound: 'Piep als de tijd om is',
+  time: 'Tijd over',
+  start: 'Start',
+  resume: 'Ga door',
+  pause: 'Pauze',
+  reset: 'Opnieuw',
+  next: 'Volgende beurt',
+  ready: 'Klaar: {time}.',
+  runs: 'Loopt.',
+  paused: 'Gepauzeerd op {time}.',
+  over: 'De tijd is om.',
+  turn: 'Beurt {turn} van {people}.',
+  done: 'Dat was de laatste beurt.',
+  total: 'In totaal',
+  hint: 'De tijd komt van de klok, dus hij blijft kloppen als het tabblad op de achtergrond staat.'
+};
+
+export default { en, nl };
